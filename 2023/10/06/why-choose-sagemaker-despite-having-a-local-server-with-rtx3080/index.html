@@ -5,41 +5,41 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 7.0.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/kenny-chen/blog.aws/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/kenny-chen/blog.aws/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/kenny-chen/blog.aws/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/kenny-chen/blog.aws/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog.aws/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog.aws/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog.aws/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog.aws/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/kenny-chen/blog.aws/css/main.css">
+<link rel="stylesheet" href="/blog.aws/css/main.css">
 
 
-<link rel="stylesheet" href="/kenny-chen/blog.aws/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/blog.aws/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"github.com","root":"/kenny-chen/blog.aws/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"kenny-chen.github.io","root":"/blog.aws/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="If I have a local server with an RTX3080 and 64GB of memory, do I still need AWS Sagemaker? The answer is: yes, there is still a need.  Although the hardware level of the local server is good, Sagemak">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Why Choose Sagemaker Despite Having a Local Server with RTX3080?">
-<meta property="og:url" content="https://github.com/kenny-chen/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/index.html">
+<meta property="og:url" content="https://kenny-chen.github.io/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/index.html">
 <meta property="og:site_name" content="AWS Sagemaker Blog">
 <meta property="og:description" content="If I have a local server with an RTX3080 and 64GB of memory, do I still need AWS Sagemaker? The answer is: yes, there is still a need.  Although the hardware level of the local server is good, Sagemak">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png">
-<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/workflow.png">
-<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/local-server-architecture.png">
-<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-001.png">
-<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-002.png">
+<meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png">
+<meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/workflow.png">
+<meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/local-server-architecture.png">
+<meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-001.png">
+<meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-002.png">
 <meta property="article:published_time" content="2023-10-05T16:00:00.000Z">
 <meta property="article:modified_time" content="2023-10-05T16:00:00.000Z">
 <meta property="article:author" content="Kenny Chen">
 <meta property="article:tag" content="AWS, Segemaker, Machine Learning, Trading Strategies">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://github.com/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png">
+<meta name="twitter:image" content="https://kenny-chen.github.io/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png">
 
-<link rel="canonical" href="https://github.com/kenny-chen/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">
+<link rel="canonical" href="https://kenny-chen.github.io/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">
 
 
 <script id="page-configurations">
@@ -101,7 +101,7 @@
 
   <div class="site-meta">
 
-    <a href="/kenny-chen/blog.aws/" class="brand" rel="start">
+    <a href="/blog.aws/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
       <h1 class="site-title">AWS Sagemaker Blog</h1>
       <span class="logo-line-after"><i></i></span>
@@ -122,12 +122,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/kenny-chen/blog.aws/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/blog.aws/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/kenny-chen/blog.aws/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+    <a href="/blog.aws/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
   </ul>
@@ -158,10 +158,10 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://github.com/kenny-chen/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">
+    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/kenny-chen/blog.aws/images/icon/ic_avatar_001.jpg">
+      <meta itemprop="image" content="/blog.aws/images/icon/ic_avatar_001.jpg">
       <meta itemprop="name" content="Kenny Chen">
       <meta itemprop="description" content="">
     </span>
@@ -189,11 +189,11 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/kenny-chen/blog.aws/categories/Sagemaker/" itemprop="url" rel="index"><span itemprop="name">Sagemaker</span></a>
+                  <a href="/blog.aws/categories/Sagemaker/" itemprop="url" rel="index"><span itemprop="name">Sagemaker</span></a>
                 </span>
                   , 
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/kenny-chen/blog.aws/categories/Sagemaker/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                  <a href="/blog.aws/categories/Sagemaker/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
                 </span>
             </span>
 
@@ -209,7 +209,7 @@
 
       
         <p>If I have a local server with an RTX3080 and 64GB of memory, do I still need AWS Sagemaker? The answer is: yes, there is still a need.</p>
-<p><img src="/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png" alt="benefits and drawbacks"></p>
+<p><img src="/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png" alt="benefits and drawbacks"></p>
 <p>Although the hardware level of the local server is good, Sagemaker provides additional benefits that are particularly suitable for team development processes. These <strong><em>benefits</em></strong> include:</p>
 <ol>
 <li><p>Sagemaker automatically uploads datasets (training set, validation set) to S3 buckets, with a timestamp suffix each time a model is trained. This makes it easy to manage data sources during a long-term development process.</p>
@@ -232,12 +232,12 @@
 </ol>
 <p>In summary, for long-term team development, it is necessary to spend time setting up Sagemaker locally in the short term.</p>
 <h2 id="How-to-decide-whether-to-set-up-Sagemaker-on-a-local-server"><a href="#How-to-decide-whether-to-set-up-Sagemaker-on-a-local-server" class="headerlink" title="How to decide whether to set up Sagemaker on a local server?"></a>How to decide whether to set up Sagemaker on a local server?</h2><p>I referred to the method in the AWS official documentation to quickly let you know whether Sagemaker should be set up on a local server or not.<br><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html">https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html</a></p>
-<p><img src="/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/workflow.png" alt="How to decide whether to set up Sagemaker on a local server?"></p>
+<p><img src="/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/workflow.png" alt="How to decide whether to set up Sagemaker on a local server?"></p>
 <p><u>1. Do you use multiple deep learning frameworks?</u><br><strong>No</strong> -&gt; Use AWS cloud-based Sagemaker service. Maintain code simplicity and consistency.<br><strong>Yes</strong> -&gt; Go to question 2.</p>
 <p><u>2. Is it team development?</u><br><strong>No</strong> -&gt; Use AWS cloud-based Sagemaker service. Automatically upload datasets and manage data versions.<br><strong>Yes</strong> -&gt; Go to question 3.</p>
 <p><u>3. Is it long-term development?</u><br><strong>No</strong> -&gt; Use a local server. Save costs for long-term usage. However, AWS cloud-based services may not be necessary. It is recommended to use a local server with a graphics card.<br><strong>Yes</strong> -&gt; Go to question 4.</p>
 <p><u>4. Is it deploying applications in the cloud?</u><br><strong>No</strong> -&gt; Use a local server.<br><strong>Yes</strong> -&gt; Set up Sagemaker on a local server. Efficiently utilize both the local server and AWS cloud-based services.</p>
-<h2 id="Local-Server-Architecture"><a href="#Local-Server-Architecture" class="headerlink" title="Local Server Architecture"></a>Local Server Architecture</h2><p><img src="/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/local-server-architecture.png" alt="Local Server Architecture"></p>
+<h2 id="Local-Server-Architecture"><a href="#Local-Server-Architecture" class="headerlink" title="Local Server Architecture"></a>Local Server Architecture</h2><p><img src="/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/local-server-architecture.png" alt="Local Server Architecture"></p>
 <ol>
 <li><p>Nvidia 11.5 driver. RTX3080 is required for both training and deploying models.</p>
 </li>
@@ -247,7 +247,7 @@
 </li>
 <li><p>Sagemaker training image. Sagemaker uses pre-built images to train models, automatically selecting suitable images for Nvidia, Python, and TensorFlow. Since I use TensorFlow, I use 763104351884.dkr.ecr.us-east-1.amazonaws.com&#x2F;tensorflow-training:2.11-gpu-py39.</p>
 </li>
-<li><p>Sagemaker server image. Sagemaker uses pre-built images to deploy models. This server image utilizes TensorFlow-serving (<a href="https://github.com/tensorflow/serving">https://github.com/tensorflow/serving</a>) and Sagemaker’s inference for model deployment. Since I use TensorFlow, I use 763104351884.dkr.ecr.us-east-1.amazonaws.com&#x2F;tensorflow-inference:2.11-gpu.</p>
+<li><p>Sagemaker server image. Sagemaker uses pre-built images to deploy models. This server image utilizes TensorFlow-serving (<a target="_blank" rel="noopener" href="https://github.com/tensorflow/serving">https://github.com/tensorflow/serving</a>) and Sagemaker’s inference for model deployment. Since I use TensorFlow, I use 763104351884.dkr.ecr.us-east-1.amazonaws.com&#x2F;tensorflow-inference:2.11-gpu.</p>
 </li>
 <li><p>S3 bucket. Used to centrally manage datasets and model versions.</p>
 </li>
@@ -285,14 +285,14 @@
 <p><strong>1. Issue with local container Tensorflow-Jupyter development environment</strong></p>
 <p>When training models, Sagemaker displays an error regarding <code>the docker container (No /opt/ml/input/config/resourceconfig.json)</code>.</p>
 <p>The main reason is that after executing <code>estimator.fit(...)</code>, Sagemaker’s Training image reads temporary files in the <code>/tmp</code> path. However, Sagemaker does not consider the local container Tensorflow-Jupyter. As a result, these temporary files in <code>/tmp</code> are only available in the local container Tensorflow-Jupyter, causing errors when the Training image of Sagemaker tries to read them.</p>
-<p>Here is the solution I provided:<br><a href="https://github.com/aws/sagemaker-pytorch-training-toolkit/issues/106#issuecomment-1862233669">https://github.com/aws/sagemaker-pytorch-training-toolkit/issues/106#issuecomment-1862233669</a></p>
-<p><img src="/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-001.png" alt="solution"></p>
+<p>Here is the solution I provided:<br><a target="_blank" rel="noopener" href="https://github.com/aws/sagemaker-pytorch-training-toolkit/issues/106#issuecomment-1862233669">https://github.com/aws/sagemaker-pytorch-training-toolkit/issues/106#issuecomment-1862233669</a></p>
+<p><img src="/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-001.png" alt="solution"></p>
 <p><strong><em>Solution</em></strong>: When launching the local container Tensorflow-Jupyter, add the <code>&quot;-v /tmp:/tmp&quot;</code> command to link the local container’s <code>/tmp </code>with the local <code>/tmp</code>, which solves this problem.</p>
 <p>Here is the code I used to launch the local container:<br><code>sudo docker run --privileged --name jupyter.sagemaker.001 --gpus all -e GRANT_SUDO=yes --user root --network host -it -v /home/jovyan/work:/home/jovyan/work -v /sagemaker:/sagemaker -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp -v /sagemaker:/sagemaker sagemaker/local:0.2 &gt;&gt; /home/jovyan/work/log/sagemaker_local_date +\%Y\%m\%d_\%H\%M\%S.log 2</code></p>
 <p><strong>2. Issue with Sagemaker’s local server image</strong><br>Sagemaker’s local server image defaults to using the inference method for deployment, so there is no inference.py in the server image. Therefore, <code>model.fit(...) </code>followed by <code>model.deploy(...)</code> results in errors.</p>
 <p>The error messages are not clear either. Sometimes, it displays <code>&quot;/ping&quot;</code> error, and other times, <code>&quot;No such file or directory: &#39;inference.py&#39;&quot;</code> error.</p>
-<p>Here is the solution I provided:<br><a href="https://github.com/aws/sagemaker-python-sdk/issues/4007#issuecomment-1878176052">https://github.com/aws/sagemaker-python-sdk/issues/4007#issuecomment-1878176052</a></p>
-<p><img src="/kenny-chen/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-002.png" alt="solution"></p>
+<p>Here is the solution I provided:<br><a target="_blank" rel="noopener" href="https://github.com/aws/sagemaker-python-sdk/issues/4007#issuecomment-1878176052">https://github.com/aws/sagemaker-python-sdk/issues/4007#issuecomment-1878176052</a></p>
+<p><img src="/blog.aws/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-002.png" alt="solution"></p>
 <p><strong><em>Solution</em></strong>: Save the model after <code>model.deploy(...)</code>. Then, use <code>sagemaker.tensorflow.TensorFlowModel(...)</code> to reload the model and reference <code>./src/inference.py</code>.</p>
 <p>Although the inference method is a more convoluted way to locally deploy models, it is useful for adding middleware business logic on the server side and is a very valuable local deployment approach.</p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>I know that Sagemaker’s cloud service offers many amazing services, such as preprocessing data, batch training, Sagemaker-TensorBoard, and more. For developers who need to quickly prototype, these magical services are perfect for them.</p>
@@ -313,7 +313,7 @@
     <div class="post-nav">
       <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/kenny-chen/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/" rel="next" title="Even though Sagemaker provides various benefits, why do I still use EC2?">
+    <a href="/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/" rel="next" title="Even though Sagemaker provides various benefits, why do I still use EC2?">
       Even though Sagemaker provides various benefits, why do I still use EC2? <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -381,14 +381,14 @@
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="Kenny Chen"
-      src="/kenny-chen/blog.aws/images/icon/ic_avatar_001.jpg">
+      src="/blog.aws/images/icon/ic_avatar_001.jpg">
   <p class="site-author-name" itemprop="name">Kenny Chen</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/kenny-chen/blog.aws/archives/">
+          <a href="/blog.aws/archives/">
         
           <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">posts</span>
@@ -450,19 +450,19 @@
   </div>
 
   
-  <script src="/kenny-chen/blog.aws/lib/anime.min.js"></script>
-  <script src="/kenny-chen/blog.aws/lib/velocity/velocity.min.js"></script>
-  <script src="/kenny-chen/blog.aws/lib/velocity/velocity.ui.min.js"></script>
+  <script src="/blog.aws/lib/anime.min.js"></script>
+  <script src="/blog.aws/lib/velocity/velocity.min.js"></script>
+  <script src="/blog.aws/lib/velocity/velocity.ui.min.js"></script>
 
-<script src="/kenny-chen/blog.aws/js/utils.js"></script>
+<script src="/blog.aws/js/utils.js"></script>
 
-<script src="/kenny-chen/blog.aws/js/motion.js"></script>
-
-
-<script src="/kenny-chen/blog.aws/js/schemes/pisces.js"></script>
+<script src="/blog.aws/js/motion.js"></script>
 
 
-<script src="/kenny-chen/blog.aws/js/next-boot.js"></script>
+<script src="/blog.aws/js/schemes/pisces.js"></script>
+
+
+<script src="/blog.aws/js/next-boot.js"></script>
 
 
 
