@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/kenny-chen/blog.aws/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/kenny-chen/blog.aws/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/kenny-chen/blog.aws/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/kenny-chen/blog.aws/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/kenny-chen/blog.aws/css/main.css">
+
+
+<link rel="stylesheet" href="/kenny-chen/blog.aws/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/kenny-chen/blog.aws/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="IntroductionIn my previous articles, I used two different trading strategies to explain the best practices of batch-transform and real-time endpoints, as well as the reasons for using EC2. These artic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Machine Learning Trading Strategy Best Practices for AWS SageMaker">
+<meta property="og:url" content="https://github.com/kenny-chen/blog.aws/2023/12/18/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/index.html">
+<meta property="og:site_name" content="AWS Sagemaker Blog">
+<meta property="og:description" content="IntroductionIn my previous articles, I used two different trading strategies to explain the best practices of batch-transform and real-time endpoints, as well as the reasons for using EC2. These artic">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/architecture-overview.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/application-load-balancer.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/multi-modal-single-container.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/data-parallelism.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/model-parallelism.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/alice-intraday-futures-trading-strategy-001.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/alice-intraday-futures-trading-strategy-002.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/diana-medium-term-quarterly-trading-strategy-001.png">
+<meta property="og:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/diana-medium-term-quarterly-trading-strategy-002.png">
+<meta property="article:published_time" content="2023-12-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-12-17T16:00:00.000Z">
+<meta property="article:author" content="Kenny Chen">
+<meta property="article:tag" content="AWS, Segemaker, Machine Learning, Trading Strategies">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://github.com/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/architecture-overview.png">
+
+<link rel="canonical" href="https://github.com/kenny-chen/blog.aws/2023/12/18/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Machine Learning Trading Strategy Best Practices for AWS SageMaker | AWS Sagemaker Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/kenny-chen/blog.aws/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">AWS Sagemaker Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Machine Learning for Financial Services and Trading Strategies</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/kenny-chen/blog.aws/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/kenny-chen/blog.aws/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://github.com/kenny-chen/blog.aws/2023/12/18/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/kenny-chen/blog.aws/images/icon/ic_avatar_001.jpg">
+      <meta itemprop="name" content="Kenny Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AWS Sagemaker Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Machine Learning Trading Strategy Best Practices for AWS SageMaker
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-12-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-12-18T00:00:00+08:00">2023-12-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/kenny-chen/blog.aws/categories/Sagemaker/" itemprop="url" rel="index"><span itemprop="name">Sagemaker</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/kenny-chen/blog.aws/categories/Sagemaker/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In my previous articles, I used two different trading strategies to explain the best practices of <code>batch-transform</code> and <code>real-time endpoints</code>, as well as the reasons for using EC2. These articles can be referred to as “<a href="/kenny-chen/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">Even though Sagemaker provides various benefits, why do I still use EC2?</a>“ and “<a href="/kenny-chen/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>“.</p>
+<p>In this article, I will first demonstrate the complete architecture of SageMaker.</p>
+<p>Then, I will explain the reasons for using <code>Multi-Modal-Single-Container</code> + <code>Microservices</code> and not using <code>Application Load Balancer</code>.</p>
+<p>Finally, I will use two different trading strategies to explain the best practices of <code>data parallelism</code> and <code>model parallelism</code> in advanced training models.</p>
+<h2 id="Architecture-Overview"><a href="#Architecture-Overview" class="headerlink" title="Architecture Overview"></a>Architecture Overview</h2><p><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/architecture-overview.png" alt="Architecture Overview"></p>
+<p><strong>Local Development Environment</strong></p>
+<ul>
+<li><code>CUDA 11.5</code> and <code>Nvidia-container-toolkit</code> for local model training.</li>
+<li><code>jupyter/tensorflow-notebook</code> for local development environment, with libraries required for <code>Sagemaker[local]</code>, <code>Backtrader</code>, and <code>Monitor Web UI</code> installed in the image.</li>
+</ul>
+<p><strong>Supported AWS services</strong></p>
+<ul>
+<li><code>Sagemaker prebuilt images</code> for pulling images to the <code>local development environment</code> for local model training and testing.</li>
+<li><code>S3 Bucket</code> for storing datasets and models.</li>
+<li><code>CodePipline </code>for deploying projects on <code>Github</code> to <code>EC2</code> production environment.</li>
+</ul>
+<p><strong>EC2</strong></p>
+<ul>
+<li><code>Custom Production Container</code> with libraries required for Sagemaker, Backtrader, and Monitor Web UI.</li>
+<li><code>Monitor Web UI</code> for presenting the trading performance of the model in graphical form, providing <code>:80</code> to Trader and Asset Portfolio Manager.</li>
+<li><code>Server Image</code> for deploying models using Sagemaker prebuilt image, providing <code>:8080</code> to business user.</li>
+</ul>
+<p><strong>Managed AWS Services</strong></p>
+<ul>
+<li><code>RDS</code> for storing model results. Monitor Web UI in EC2 retrieves the data from RDS and presents the trading performance in graphical form.</li>
+<li><code>CloudWatch</code> for monitoring the computation and storage of EC2, RDS, and S3 Bucket.</li>
+<li><code>IAM</code> for helping jupyter&#x2F;tensorflow-notebook in local development environment to access Sagemaker prebuilt images and S3 Bucket.</li>
+</ul>
+<h2 id="Why-not-use-Application-Load-Balancer-and-instead-create-Multi-Modal-Single-Container-Microservices-on-EC2-to-handle-errors"><a href="#Why-not-use-Application-Load-Balancer-and-instead-create-Multi-Modal-Single-Container-Microservices-on-EC2-to-handle-errors" class="headerlink" title="Why not use Application Load Balancer and instead create Multi-Modal-Single-Container + Microservices on EC2 to handle errors?"></a>Why not use <code>Application Load Balancer</code> and instead create <code>Multi-Modal-Single-Container</code> + <code>Microservices</code> on EC2 to handle errors?</h2><p><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/application-load-balancer.png" alt="Application Load Balancer"></p>
+<p><code>Application Load Balancer</code> is a remarkable service. In fact, it can also be used to handle errors. However, in the case of trading strategies, I would choose to handle errors with <code>Multi-Modal-Single-Container</code> + <code>Microservices</code>. </p>
+<p>Here are my three error handling methods:</p>
+<p><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/multi-modal-single-container.png" alt="three error handling methods"></p>
+<p>The goal of the following three error handling methods is to flexibly reduce hardware resource requirements.</p>
+<p><strong>1.Switch to Smallest Model</strong></p>
+<p>There are two trading strategies (Diana’s medium-term quarterly trading strategy and Alice’s intraday futures trading strategy). Each trading strategy has two versions of the model, where the <code>Biggest Model</code> provides high accuracy but requires high hardware resources. On the contrary, the <code>Smallest Model</code> provides low accuracy but requires low hardware resources.</p>
+<p>If the server is in a high computational state, switching to the <code>Smallest Model</code> can reduce the hardware resource requirements and keep the application running smoothly.</p>
+<p><strong>2. Response caching results</strong></p>
+<p>When the same business user uses the application frequently, returning cached data can avoid overloading hardware resources.</p>
+<p><strong>3. Delayed Response time</strong></p>
+<p>When hardware resources are overloaded, delaying the response time can release the hardware resources.</p>
+<h2 id="Advantages-of-Multi-Modal-Single-Container-Microservices"><a href="#Advantages-of-Multi-Modal-Single-Container-Microservices" class="headerlink" title="Advantages of Multi-Modal-Single-Container + Microservices"></a>Advantages of <code>Multi-Modal-Single-Container</code> + <code>Microservices</code></h2><p>Here are my examples of trading strategies to explain the reasons for using <code>Multi-Modal-Single-Container</code> + <code>Microservices</code>.</p>
+<p><strong>1.Trading strategies have high fault tolerance</strong></p>
+<p>Both trading strategies anticipate reduced profits due to slippage during trading. This design with high fault tolerance can accommodate various hardware issues, such as switching to the Smallest Model, response caching results, and delayed response time.</p>
+<p>Additionally, it can handle errors from market makers, such as delayed quotes, partial executions, and wide bid-ask spreads.</p>
+<p><strong>2. Shared hardware resources</strong></p>
+<p>The frequency and time of use of two trading strategies are different, allowing for full utilization of idle hardware resources.</p>
+<p><strong>3. Deployment of trading strategies in different regions</strong></p>
+<p>Diana’s medium-term quarterly trading strategy targets global assets. By deploying trading strategies independently in Hong Kong and the United States, the latency can be reduced.</p>
+<p>Furthermore, if the hardware in Hong Kong completely stops working, the hardware in the United States can be used to hedge the risk by purchasing short options of overseas ETF.</p>
+<h2 id="Best-Practices-of-Data-Parallelism-and-Model-Parallelism-in-Advanced-Training-Models"><a href="#Best-Practices-of-Data-Parallelism-and-Model-Parallelism-in-Advanced-Training-Models" class="headerlink" title="Best Practices of Data Parallelism and Model Parallelism in Advanced Training Models"></a>Best Practices of Data Parallelism and Model Parallelism in Advanced Training Models</h2><p>Sagemaker provides remarkable advanced training methods: <code>Data parallelism</code> and <code>Model parallelism</code>. I will use two different trading strategies to explain the best practices of data parallelism and model parallelism in advanced training models.</p>
+<p><strong>Data parallelism</strong><br><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/data-parallelism.png" alt="Data parallelism"></p>
+<p><strong>Model parallelism</strong><br><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/model-parallelism.png" alt="Model parallelism"></p>
+<blockquote>
+<ul>
+<li><code>Model Parallelism</code>: A simple method of model parallelism is to explicitly assign layers of the model onto different devices.</li>
+<li><code>Data Parallelism</code>: Each individual training process has a copy of the global model but trains it on a unique slice of data in parallel with others.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>– Accelerate Deep Learning Workloads with Amazon SageMaker, chapter10</p>
+</blockquote>
+<p>In simple terms, if the data can be divided into small groups, <code>Data parallelism</code> is used. If the model can be divided into small groups, <code>Model parallelism</code> is used.</p>
+<p><strong>Alice’s intraday futures trading strategy</strong></p>
+<p><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/alice-intraday-futures-trading-strategy-001.png" alt="Alice&#39;s intraday futures trading strategy"></p>
+<p>The intraday trading strategy mainly uses a few key indicators to train the model, providing entry and exit points. Therefore, the data samples are large.</p>
+<p><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/alice-intraday-futures-trading-strategy-002.png" alt="Alice&#39;s intraday futures trading strategy"></p>
+<p>When the data sample is large and the model has only a few algorithms, <code>Data parallelism</code> should be used to train the model. This allows the data set to be split and computed on different GPUs.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">distribution = &#123; </span><br><span class="line">    &quot;smdistributed&quot;: &#123; </span><br><span class="line">        &quot;dataparallel&quot;: &#123;</span><br><span class="line">            &quot;enabled&quot;: True, </span><br><span class="line">            &quot;custom_mpi_options&quot;: &quot;-verbose -x NCCL_DEBUG=VERSION&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/PacktPublishing/Accelerate-Deep-Learning-Workloads-with-Amazon-SageMaker/blob/main/Chapter06/3_SDP_finetuning_pytorch_models.ipynb">3_SDP_finetuning_pytorch_models.ipynb</a></p>
+<p>Sagemaker provides remarkable advanced training methods. By setting the distribution parameter, Data parallelism can be used to train the model.</p>
+<p><strong>Diana’s Medium-Term Quarterly Trading Strategy</strong></p>
+<p><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/diana-medium-term-quarterly-trading-strategy-001.png" alt="Diana&#39;s Medium-Term Quarterly Trading Strategy"></p>
+<p>The macro trading strategy mainly uses dozens of key indicators to provide overseas asset allocation forecasts. The minimum data set is 8 years (2 bull and bear cycles) of hourly snapshot data.</p>
+<p><img src="/kenny-chen/blog.aws/images/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/diana-medium-term-quarterly-trading-strategy-002.png" alt="Diana&#39;s Medium-Term Quarterly Trading Strategy"></p>
+<p>When the main algorithms can be split into small groups, <code>Model parallelism</code> is used to train the model. This allows the model tensor to be computed in batches on different GPUs.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">distribution=&#123;</span><br><span class="line">    &quot;smdistributed&quot;: &#123;</span><br><span class="line">        &quot;modelparallel&quot;: &#123;</span><br><span class="line">            &quot;enabled&quot;:True,</span><br><span class="line">            &quot;parameters&quot;: &#123;</span><br><span class="line">                &quot;microbatches&quot;: 8,</span><br><span class="line">                &quot;placement_strategy&quot;: &quot;cluster&quot;,</span><br><span class="line">                &quot;pipeline&quot;: &quot;interleaved&quot;,</span><br><span class="line">                &quot;optimize&quot;: &quot;speed&quot;, </span><br><span class="line">                &quot;partitions&quot;: 2,</span><br><span class="line">                &quot;auto_partition&quot;: True,</span><br><span class="line">                &quot;ddp&quot;: True,</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;mpi&quot;: &#123;</span><br><span class="line">          &quot;enabled&quot;: True,</span><br><span class="line">          &quot;processes_per_host&quot;: 1,</span><br><span class="line">          &quot;custom_mpi_options&quot;: &quot;-verbose -x orte_base_help_aggregate=0&quot; </span><br><span class="line">    &#125;,</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/PacktPublishing/Accelerate-Deep-Learning-Workloads-with-Amazon-SageMaker/blob/main/Chapter06/4_SMP_finetuning_pytorch_models.ipynb">3_SDP_finetuning_pytorch_models.ipynb</a></p>
+<p>Similarly, by setting the distribution parameter, Model parallelism can be used to train the model.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>AWS provides convenient solutions for the financial industry. Sagemaker seamlessly integrates deep learning workflow into production environments. Additionally, Sagemaker offers surprising features to accelerate development. I will continue to learn about new AWS products and share examples of AWS services in finance and trading.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/kenny-chen/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/" rel="prev" title="Even though Sagemaker provides various benefits, why do I still use EC2?">
+      <i class="fa fa-chevron-left"></i> Even though Sagemaker provides various benefits, why do I still use EC2?
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">1.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Architecture-Overview"><span class="nav-number">2.</span> <span class="nav-text">Architecture Overview</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-not-use-Application-Load-Balancer-and-instead-create-Multi-Modal-Single-Container-Microservices-on-EC2-to-handle-errors"><span class="nav-number">3.</span> <span class="nav-text">Why not use Application Load Balancer and instead create Multi-Modal-Single-Container + Microservices on EC2 to handle errors?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Advantages-of-Multi-Modal-Single-Container-Microservices"><span class="nav-number">4.</span> <span class="nav-text">Advantages of Multi-Modal-Single-Container + Microservices</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Best-Practices-of-Data-Parallelism-and-Model-Parallelism-in-Advanced-Training-Models"><span class="nav-number">5.</span> <span class="nav-text">Best Practices of Data Parallelism and Model Parallelism in Advanced Training Models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Conclusion"><span class="nav-number">6.</span> <span class="nav-text">Conclusion</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kenny Chen"
+      src="/kenny-chen/blog.aws/images/icon/ic_avatar_001.jpg">
+  <p class="site-author-name" itemprop="name">Kenny Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/kenny-chen/blog.aws/archives/">
+        
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://linkedin.com/in/kenny-chen-a560a8241" title="Linkin → https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;kenny-chen-a560a8241" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkin</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kenny Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/kenny-chen/blog.aws/lib/anime.min.js"></script>
+  <script src="/kenny-chen/blog.aws/lib/velocity/velocity.min.js"></script>
+  <script src="/kenny-chen/blog.aws/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/kenny-chen/blog.aws/js/utils.js"></script>
+
+<script src="/kenny-chen/blog.aws/js/motion.js"></script>
+
+
+<script src="/kenny-chen/blog.aws/js/schemes/pisces.js"></script>
+
+
+<script src="/kenny-chen/blog.aws/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
