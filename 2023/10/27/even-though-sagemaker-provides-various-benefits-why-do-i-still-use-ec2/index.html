@@ -23,7 +23,7 @@
   <meta name="description" content="IntroductionIn the previous article, I explained the benefits of using Sagemaker for training models on a local server, which can be found in the article “Why Choose Sagemaker Despite Having a Local S">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Even though Sagemaker provides various benefits, why do I still use EC2?">
-<meta property="og:url" content="https://kenny-chen.github.io/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/index.html">
+<meta property="og:url" content="https://kenny-chen.github.io/blog.aws/2023/10/27/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/index.html">
 <meta property="og:site_name" content="AWS Sagemaker Blog">
 <meta property="og:description" content="IntroductionIn the previous article, I explained the benefits of using Sagemaker for training models on a local server, which can be found in the article “Why Choose Sagemaker Despite Having a Local S">
 <meta property="og:locale" content="en_US">
@@ -33,14 +33,14 @@
 <meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/batch-transform-endpoint.png">
 <meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/real-time-endpoint.png">
 <meta property="og:image" content="https://kenny-chen.github.io/blog.aws/images/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/benefits-001.png">
-<meta property="article:published_time" content="2023-11-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-11-12T16:00:00.000Z">
+<meta property="article:published_time" content="2023-10-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-26T16:00:00.000Z">
 <meta property="article:author" content="Kenny Chen">
 <meta property="article:tag" content="AWS, Segemaker, Machine Learning, Trading Strategies">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://kenny-chen.github.io/blog.aws/images/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/training-and-deploying-models-locally.png">
 
-<link rel="canonical" href="https://kenny-chen.github.io/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">
+<link rel="canonical" href="https://kenny-chen.github.io/blog.aws/2023/10/27/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">
 
 
 <script id="page-configurations">
@@ -126,6 +126,11 @@
     <a href="/blog.aws/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog.aws/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/blog.aws/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
@@ -159,7 +164,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">
+    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/10/27/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blog.aws/images/icon/ic_avatar_001.jpg">
@@ -182,7 +187,7 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-11-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-11-13T00:00:00+08:00">2023-11-13</time>
+              <time title="Created: 2023-10-27 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-27T00:00:00+08:00">2023-10-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -209,7 +214,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In the previous article, I explained the benefits of using Sagemaker for training models on a local server, which can be found in the article “<a href="/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>“.</p>
+        <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In the previous article, I explained the benefits of using Sagemaker for training models on a local server, which can be found in the article “<a href="/blog.aws/2023/09/13/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>“.</p>
 <p>In this article, I will first present a simple example to demonstrate the process of training and deploying models locally using Sagemaker.</p>
 <p>Then, I will share my experience with a LSTM futures trading project to explain the best practices for using real-time endpoints and batch-transform endpoints.</p>
 <p>Finally, based on my experience with the LSTM futures trading project, I will explain which Sagemaker Instance &#x2F; Fargate &#x2F; EC2 should be selected for deployment.</p>
@@ -313,11 +318,11 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/" rel="prev" title="Why Choose Sagemaker Despite Having a Local Server with RTX3080?">
+    <a href="/blog.aws/2023/09/13/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/" rel="prev" title="Why Choose Sagemaker Despite Having a Local Server with RTX3080?">
       <i class="fa fa-chevron-left"></i> Why Choose Sagemaker Despite Having a Local Server with RTX3080?
     </a></div>
       <div class="post-nav-item">
-    <a href="/blog.aws/2023/12/18/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/" rel="next" title="Machine Learning Trading Strategy Best Practices for AWS SageMaker">
+    <a href="/blog.aws/2023/12/05/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/" rel="next" title="Machine Learning Trading Strategy Best Practices for AWS SageMaker">
       Machine Learning Trading Strategy Best Practices for AWS SageMaker <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -411,6 +416,19 @@
   </div>
 
 
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://dev.to/kennc" title="https:&#x2F;&#x2F;dev.to&#x2F;kennc" rel="noopener" target="_blank">Dev.to</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/chenkuang" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chenkuang" rel="noopener" target="_blank">Cnblogs</a>
+        </li>
+    </ul>
+  </div>
 
       </div>
 

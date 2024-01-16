@@ -115,6 +115,11 @@
     <a href="/blog.aws/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/blog.aws/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
     <a href="/blog.aws/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
@@ -147,7 +152,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/12/18/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/">
+    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/12/05/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blog.aws/images/icon/ic_avatar_001.jpg">
@@ -161,7 +166,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/blog.aws/2023/12/18/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/" class="post-title-link" itemprop="url">Machine Learning Trading Strategy Best Practices for AWS SageMaker</a>
+            <a href="/blog.aws/2023/12/05/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/" class="post-title-link" itemprop="url">Machine Learning Trading Strategy Best Practices for AWS SageMaker</a>
         </h2>
 
         <div class="post-meta">
@@ -171,7 +176,7 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-12-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-12-18T00:00:00+08:00">2023-12-18</time>
+              <time title="Created: 2023-12-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-12-05T00:00:00+08:00">2023-12-05</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -198,7 +203,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In my previous articles, I used two different trading strategies to explain the best practices of <code>batch-transform</code> and <code>real-time endpoints</code>, as well as the reasons for using EC2. These articles can be referred to as “<a href="/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">Even though Sagemaker provides various benefits, why do I still use EC2?</a>“ and “<a href="/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>“.</p>
+          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In my previous articles, I used two different trading strategies to explain the best practices of <code>batch-transform</code> and <code>real-time endpoints</code>, as well as the reasons for using EC2. These articles can be referred to as “<a href="/blog.aws/2023/10/27/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">Even though Sagemaker provides various benefits, why do I still use EC2?</a>“ and “<a href="/blog.aws/2023/09/13/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>“.</p>
 <p>In this article, I will first demonstrate the complete architecture of SageMaker.</p>
 <p>Then, I will explain the reasons for using <code>Multi-Modal-Single-Container</code> + <code>Microservices</code> and not using <code>Application Load Balancer</code>.</p>
 <p>Finally, I will use two different trading strategies to explain the best practices of <code>data parallelism</code> and <code>model parallelism</code> in advanced training models.</p>
@@ -296,7 +301,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">
+    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/10/27/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blog.aws/images/icon/ic_avatar_001.jpg">
@@ -310,7 +315,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/blog.aws/2023/11/13/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/" class="post-title-link" itemprop="url">Even though Sagemaker provides various benefits, why do I still use EC2?</a>
+            <a href="/blog.aws/2023/10/27/even-though-sagemaker-provides-various-benefits-why-do-i-still-use-ec2/" class="post-title-link" itemprop="url">Even though Sagemaker provides various benefits, why do I still use EC2?</a>
         </h2>
 
         <div class="post-meta">
@@ -320,7 +325,7 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-11-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-11-13T00:00:00+08:00">2023-11-13</time>
+              <time title="Created: 2023-10-27 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-27T00:00:00+08:00">2023-10-27</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -347,7 +352,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In the previous article, I explained the benefits of using Sagemaker for training models on a local server, which can be found in the article “<a href="/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>“.</p>
+          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>In the previous article, I explained the benefits of using Sagemaker for training models on a local server, which can be found in the article “<a href="/blog.aws/2023/09/13/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>“.</p>
 <p>In this article, I will first present a simple example to demonstrate the process of training and deploying models locally using Sagemaker.</p>
 <p>Then, I will share my experience with a LSTM futures trading project to explain the best practices for using real-time endpoints and batch-transform endpoints.</p>
 <p>Finally, based on my experience with the LSTM futures trading project, I will explain which Sagemaker Instance &#x2F; Fargate &#x2F; EC2 should be selected for deployment.</p>
@@ -455,7 +460,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">
+    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/09/13/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/blog.aws/images/icon/ic_avatar_001.jpg">
@@ -469,7 +474,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/blog.aws/2023/10/06/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/" class="post-title-link" itemprop="url">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>
+            <a href="/blog.aws/2023/09/13/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/" class="post-title-link" itemprop="url">Why Choose Sagemaker Despite Having a Local Server with RTX3080?</a>
         </h2>
 
         <div class="post-meta">
@@ -479,7 +484,7 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2023-10-06 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-06T00:00:00+08:00">2023-10-06</time>
+              <time title="Created: 2023-09-13 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-13T00:00:00+08:00">2023-09-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -695,6 +700,19 @@
   </div>
 
 
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://dev.to/kennc" title="https:&#x2F;&#x2F;dev.to&#x2F;kennc" rel="noopener" target="_blank">Dev.to</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/chenkuang" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chenkuang" rel="noopener" target="_blank">Cnblogs</a>
+        </li>
+    </ul>
+  </div>
 
       </div>
 
