@@ -152,6 +152,107 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2024/01/27/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog.aws/images/icon/ic_avatar_001.jpg">
+      <meta itemprop="name" content="Kenny Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AWS Sagemaker Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/blog.aws/2024/01/27/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/" class="post-title-link" itemprop="url">Most three important Q&A of Trading Strategy Deployment for AWS SageMaker</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-01-27 00:00:00" itemprop="dateCreated datePublished" datetime="2024-01-27T00:00:00+08:00">2024-01-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog.aws/categories/Sagemaker/" itemprop="url" rel="index"><span itemprop="name">Sagemaker</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog.aws/categories/Sagemaker/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>I am extremely delighted to have participated in the AWS <a target="_blank" rel="noopener" href="https://aws.amazon.com/events/reinvent-recap-hongkong/">re:Invent re:Cap</a> event held in Hong Kong, which provided me with exposure to the latest AI solutions offered by AWS.</p>
+<p>In my previous article, although I discussed deploying deep learning models in production using EC2, such a solution is only suitable for my personal use case, which can be found in the article “<a href="/blog.aws/2023/12/05/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/">Machine Learning Trading Strategy Best Practices for AWS SageMaker</a>“.</p>
+<p>In this article, I will first discuss the advantages of deploying models in production using SageMaker after training them locally. I would like to express my gratitude to <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hatted/">Raymond Tsang</a> for providing valuable insights.</p>
+<p>Next, I will delve into the benefits of training models using SageMaker as opposed to local training. I would like to thank <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/yanwei-cui/">Yanwei CUI</a> for sharing their insights.</p>
+<p>Lastly, I will explain a more efficient trading strategy architecture, with special thanks to <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/wingso/">Wing So</a> for their valuable input.</p>
+<h2 id="1-The-Benefits-of-Deploying-Models-in-Production-with-SageMaker"><a href="#1-The-Benefits-of-Deploying-Models-in-Production-with-SageMaker" class="headerlink" title="1. The Benefits of Deploying Models in Production with SageMaker"></a>1. The Benefits of Deploying Models in Production with SageMaker</h2><p>The greatest advantage of SageMaker lies in its <code>data security</code>, <code>auto scaling</code>, and <code>container deployment</code> capabilities. If high data security, handling sudden traffic spikes, and agile development processes are required, leveraging these advantages of SageMaker can significantly accelerate development and deployment timelines.</p>
+<p>However, after training models locally, can one deploy them in production using SageMaker? In other words, is it possible to <u>utilize only specific functionalities</u> of SageMaker?</p>
+<p>Answer: Yes, it is possible to use only certain functionalities of SageMaker.</p>
+<p>In the case of my use case, “Alice’s Intraday Futures Trading Strategy,” which is a daily trading strategy model with fixed trading times and a predictable number of requests, the model is susceptible to market sentiment and unexpected news events, necessitating monthly model updates.</p>
+<p>In such a scenario, deploying the model in a production environment using SageMaker offers the following advantages:</p>
+<ul>
+<li>SageMaker allows for <code>container deployment</code>, making it easier to manage custom inference code within the deployment image.</li>
+<li>SageMaker’s endpoint supports <code>version iterations</code>, facilitating agile development processes.</li>
+<li>SageMaker supports <code>multi-model</code> deployment in a <code>single endpoint</code>, enabling easier management of multiple model interfaces.</li>
+</ul>
+<p>While local model training is preferred in my use case, there are still advantages to using SageMaker for model training.</p>
+<h2 id="2-The-Advantages-of-Training-Models-with-SageMaker"><a href="#2-The-Advantages-of-Training-Models-with-SageMaker" class="headerlink" title="2. The Advantages of Training Models with SageMaker"></a>2. The Advantages of Training Models with SageMaker</h2><p>If there are two RTX3080 graphics cards available on the local server, is there still a need to use AWS SageMaker for training models? In other words, can one replace the <code>pay-as-you-go</code> model training of SageMaker with a <code>one-time higher fixed cost</code>?</p>
+<p>Answer: Yes, it is possible. However, if one wishes to avoid the time-consuming process of hardware deployment or simply desires to utilize higher-end hardware for a shorter duration, training models using SageMaker is more suitable.</p>
+<p>Furthermore, SageMaker optimizes <code>data-batch processing</code> and <code>floating-point operations</code> to accelerate model training speed.</p>
+<p>In the case of my use case, “Diana’s Medium-Term Quarterly Trading Strategy,” which involves multi-asset trading in <u>four major markets</u> (US stocks, Hong Kong stocks, US bonds, and USD currency), the optimized <code>data-batch processing</code> of SageMaker can be utilized for the four main markets.</p>
+<p>Additionally, the optimized <code>floating-point operations</code> of SageMaker can be applied to the <u>three core technical indicators</u> within the model (high dividend stocks, low volatility, and capital accumulation).</p>
+<p>Therefore, gaming graphics cards have limitations when it comes to model training.</p>
+<h2 id="3-A-More-Efficient-Trading-Strategy-Architecture"><a href="#3-A-More-Efficient-Trading-Strategy-Architecture" class="headerlink" title="3. A More Efficient Trading Strategy Architecture"></a>3. A More Efficient Trading Strategy Architecture</h2><p>Whether using EC2 or SageMaker container deployment, both options serve to expedite development time. However, considering the overall efficiency of the trading system, two factors need to be considered: <code>streaming data processing</code> and <code>the layer at which computations</code> are performed.</p>
+<p><img src="/blog.aws/images/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/architecture.png" alt="Full Architecture"></p>
+<p>The key to achieving higher efficiency lies in the <code>Queue layer</code>.</p>
+<p>After the Data Provider delivers streaming data, the Queue distributes the data to the Application while simultaneously storing the streaming data in a database. This reduces latency and improves overall efficiency.</p>
+<p>Furthermore, performing computations at the Queue layer for the technical indicators used by all Applications prevents redundant calculations and enhances overall efficiency.</p>
+<p>However, further investigation is required to determine which Queue framework to use.</p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>The theme of AWS <u>re:Invent re:Cap</u>, “Gen AI,” was a captivating event. There were many intriguing segments, such as the “Deep Dive Lounge,” “Lighting Talk,” and “Game Jam,” which provided delightful surprises.</p>
+<p><img src="/blog.aws/images/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/deep-dive-lounge.jpg" alt="Deep Dive Lounge"><u>Deep Dive Lounge, Wing So.</u></p>
+<p>More importantly, numerous AWS solution architects have contributed to the advancement of my trading endeavors, offering lower-cost solutions and improved computational efficiency. Lastly, I would like to express my special thanks to <u>Raymond Tsang</u>, <u>Yanwei CUI</u>, and <u>Wing So</u> for their invaluable assistance.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://kenny-chen.github.io/blog.aws/2023/12/05/machine-learning-trading-strategy-best-practices-for-aws-sagemaker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -683,7 +784,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/blog.aws/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
