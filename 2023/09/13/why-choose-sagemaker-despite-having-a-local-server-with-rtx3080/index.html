@@ -214,7 +214,7 @@
 
       
         <p>If I have a local server with an RTX3080 and 64GB of memory, do I still need AWS Sagemaker? The answer is: yes, there is still a need.</p>
-<p><img src="/./images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png" alt="benefits and drawbacks"></p>
+<p><img src="/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/benefits-and-drawbacks.png" alt="benefits and drawbacks"></p>
 <p>Although the hardware level of the local server is good, Sagemaker provides additional benefits that are particularly suitable for team development processes. These <strong><em>benefits</em></strong> include:</p>
 <ol>
 <li><p>Sagemaker automatically uploads datasets (training set, validation set) to S3 buckets, with a timestamp suffix each time a model is trained. This makes it easy to manage data sources during a long-term development process.</p>
@@ -237,12 +237,12 @@
 </ol>
 <p>In summary, for long-term team development, it is necessary to spend time setting up Sagemaker locally in the short term.</p>
 <h2 id="How-to-decide-whether-to-set-up-Sagemaker-on-a-local-server"><a href="#How-to-decide-whether-to-set-up-Sagemaker-on-a-local-server" class="headerlink" title="How to decide whether to set up Sagemaker on a local server?"></a>How to decide whether to set up Sagemaker on a local server?</h2><p>I referred to the method in the AWS official documentation to quickly let you know whether Sagemaker should be set up on a local server or not.<br><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html">https://docs.aws.amazon.com/sagemaker/latest/dg/docker-containers.html</a></p>
-<p><img src="/./images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/workflow.png" alt="How to decide whether to set up Sagemaker on a local server?"></p>
+<p><img src="/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/workflow.png" alt="How to decide whether to set up Sagemaker on a local server?"></p>
 <p><u>1. Do you use multiple deep learning frameworks?</u><br><strong>No</strong> -&gt; Use AWS cloud-based Sagemaker service. Maintain code simplicity and consistency.<br><strong>Yes</strong> -&gt; Go to question 2.</p>
 <p><u>2. Is it team development?</u><br><strong>No</strong> -&gt; Use AWS cloud-based Sagemaker service. Automatically upload datasets and manage data versions.<br><strong>Yes</strong> -&gt; Go to question 3.</p>
 <p><u>3. Is it long-term development?</u><br><strong>No</strong> -&gt; Use a local server. Save costs for long-term usage. However, AWS cloud-based services may not be necessary. It is recommended to use a local server with a graphics card.<br><strong>Yes</strong> -&gt; Go to question 4.</p>
 <p><u>4. Is it deploying applications in the cloud?</u><br><strong>No</strong> -&gt; Use a local server.<br><strong>Yes</strong> -&gt; Set up Sagemaker on a local server. Efficiently utilize both the local server and AWS cloud-based services.</p>
-<h2 id="Local-Server-Architecture"><a href="#Local-Server-Architecture" class="headerlink" title="Local Server Architecture"></a>Local Server Architecture</h2><p><img src="/./images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/local-server-architecture.png" alt="Local Server Architecture"></p>
+<h2 id="Local-Server-Architecture"><a href="#Local-Server-Architecture" class="headerlink" title="Local Server Architecture"></a>Local Server Architecture</h2><p><img src="/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/local-server-architecture.png" alt="Local Server Architecture"></p>
 <ol>
 <li><p>Nvidia 11.5 driver. RTX3080 is required for both training and deploying models.</p>
 </li>
@@ -291,13 +291,13 @@
 <p>When training models, Sagemaker displays an error regarding <code>the docker container (No /opt/ml/input/config/resourceconfig.json)</code>.</p>
 <p>The main reason is that after executing <code>estimator.fit(...)</code>, Sagemaker’s Training image reads temporary files in the <code>/tmp</code> path. However, Sagemaker does not consider the local container Tensorflow-Jupyter. As a result, these temporary files in <code>/tmp</code> are only available in the local container Tensorflow-Jupyter, causing errors when the Training image of Sagemaker tries to read them.</p>
 <p>Here is the solution I provided:<br><a target="_blank" rel="noopener" href="https://github.com/aws/sagemaker-pytorch-training-toolkit/issues/106#issuecomment-1862233669">https://github.com/aws/sagemaker-pytorch-training-toolkit/issues/106#issuecomment-1862233669</a></p>
-<p><img src="/./images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-001.png" alt="solution"></p>
+<p><img src="/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-001.png" alt="solution"></p>
 <p><strong><em>Solution</em></strong>: When launching the local container Tensorflow-Jupyter, add the <code>&quot;-v /tmp:/tmp&quot;</code> command to link the local container’s <code>/tmp </code>with the local <code>/tmp</code>, which solves this problem.</p>
 <p>Here is the code I used to launch the local container:<br><code>sudo docker run --privileged --name jupyter.sagemaker.001 --gpus all -e GRANT_SUDO=yes --user root --network host -it -v /home/jovyan/work:/home/jovyan/work -v /sagemaker:/sagemaker -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp -v /sagemaker:/sagemaker sagemaker/local:0.2 &gt;&gt; /home/jovyan/work/log/sagemaker_local_date +\%Y\%m\%d_\%H\%M\%S.log 2</code></p>
 <p><strong>2. Issue with Sagemaker’s local server image</strong><br>Sagemaker’s local server image defaults to using the inference method for deployment, so there is no inference.py in the server image. Therefore, <code>model.fit(...) </code>followed by <code>model.deploy(...)</code> results in errors.</p>
 <p>The error messages are not clear either. Sometimes, it displays <code>&quot;/ping&quot;</code> error, and other times, <code>&quot;No such file or directory: &#39;inference.py&#39;&quot;</code> error.</p>
 <p>Here is the solution I provided:<br><a target="_blank" rel="noopener" href="https://github.com/aws/sagemaker-python-sdk/issues/4007#issuecomment-1878176052">https://github.com/aws/sagemaker-python-sdk/issues/4007#issuecomment-1878176052</a></p>
-<p><img src="/./images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-002.png" alt="solution"></p>
+<p><img src="/images/why-choose-sagemaker-despite-having-a-local-server-with-rtx3080/github-002.png" alt="solution"></p>
 <p><strong><em>Solution</em></strong>: Save the model after <code>model.deploy(...)</code>. Then, use <code>sagemaker.tensorflow.TensorFlowModel(...)</code> to reload the model and reference <code>./src/inference.py</code>.</p>
 <p>Although the inference method is a more convoluted way to locally deploy models, it is useful for adding middleware business logic on the server side and is a very valuable local deployment approach.</p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>I know that Sagemaker’s cloud service offers many amazing services, such as preprocessing data, batch training, Sagemaker-TensorBoard, and more. For developers who need to quickly prototype, these magical services are perfect for them.</p>

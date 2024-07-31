@@ -23,7 +23,7 @@
   <meta name="description" content="IntroductionI am extremely delighted to have participated in the AWS re:Invent re:Cap event held in Hong Kong, which provided me with exposure to the latest AI solutions offered by AWS. In my previous">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Most three important Q&amp;A of Trading Strategy Deployment for AWS SageMaker">
-<meta property="og:url" content="https://kennychen.frontiertechcap.com/!_posts_20240731_a/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker.html">
+<meta property="og:url" content="https://kennychen.frontiertechcap.com/!_posts/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker.html">
 <meta property="og:site_name" content="AWS Sagemaker Blog">
 <meta property="og:description" content="IntroductionI am extremely delighted to have participated in the AWS re:Invent re:Cap event held in Hong Kong, which provided me with exposure to the latest AI solutions offered by AWS. In my previous">
 <meta property="og:locale" content="en_US">
@@ -36,7 +36,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://kennychen.frontiertechcap.com/images/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/architecture.png">
 
-<link rel="canonical" href="https://kennychen.frontiertechcap.com/!_posts_20240731_a/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker">
+<link rel="canonical" href="https://kennychen.frontiertechcap.com/!_posts/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker">
 
 
 <script id="page-configurations">
@@ -202,13 +202,13 @@
 <p>Additionally, the optimized <code>floating-point operations</code> of SageMaker can be applied to the <u>three core technical indicators</u> within the model (high dividend stocks, low volatility, and capital accumulation).</p>
 <p>Therefore, gaming graphics cards have limitations when it comes to model training.</p>
 <h2 id="3-A-More-Efficient-Trading-Strategy-Architecture"><a href="#3-A-More-Efficient-Trading-Strategy-Architecture" class="headerlink" title="3. A More Efficient Trading Strategy Architecture"></a>3. A More Efficient Trading Strategy Architecture</h2><p>Whether using EC2 or SageMaker container deployment, both options serve to expedite development time. However, considering the overall efficiency of the trading system, two factors need to be considered: <code>streaming data processing</code> and <code>the layer at which computations</code> are performed.</p>
-<p><img src="/images/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/architecture.png" alt="Full Architecture"></p>
+<p><img src="/./images/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/architecture.png" alt="Full Architecture"></p>
 <p>The key to achieving higher efficiency lies in the <code>Queue layer</code>.</p>
 <p>After the Data Provider delivers streaming data, the Queue distributes the data to the Application while simultaneously storing the streaming data in a database. This reduces latency and improves overall efficiency.</p>
 <p>Furthermore, performing computations at the Queue layer for the technical indicators used by all Applications prevents redundant calculations and enhances overall efficiency.</p>
 <p>However, further investigation is required to determine which Queue framework to use.</p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>The theme of AWS <u>re:Invent re:Cap</u>, “Gen AI,” was a captivating event. There were many intriguing segments, such as the “Deep Dive Lounge,” “Lighting Talk,” and “Game Jam,” which provided delightful surprises.</p>
-<p><img src="/images/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/deep-dive-lounge.jpg" alt="Deep Dive Lounge"><u>Deep Dive Lounge, Wing So.</u></p>
+<p><img src="/./images/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/deep-dive-lounge.jpg" alt="Deep Dive Lounge"><u>Deep Dive Lounge, Wing So.</u></p>
 <p>More importantly, numerous AWS solution architects have contributed to the advancement of my trading endeavors, offering lower-cost solutions and improved computational efficiency. Lastly, I would like to express my special thanks to <u>Raymond Tsang</u>, <u>Yanwei CUI</u>, and <u>Wing So</u> for their invaluable assistance.</p>
 
       </div>
