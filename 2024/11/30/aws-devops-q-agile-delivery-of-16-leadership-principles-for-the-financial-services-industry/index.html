@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"kennychen.frontiertechcap.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="1.0 PrefaceI am currently working in a financial technology company that specializes in providing (1) financial trading data and (2) macro-asset allocation solutions. The company is developing a “Macr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS DevOps+Q Agile Delivery of 16 Leadership Principles for the Financial Services Industry">
+<meta property="og:url" content="https://kennychen.frontiertechcap.com/2024/11/30/aws-devops-q-agile-delivery-of-16-leadership-principles-for-the-financial-services-industry/index.html">
+<meta property="og:site_name" content="AWS Sagemaker Blog">
+<meta property="og:description" content="1.0 PrefaceI am currently working in a financial technology company that specializes in providing (1) financial trading data and (2) macro-asset allocation solutions. The company is developing a “Macr">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ctuigys918jr1xefo018.png">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/w8sttinspc3fpqdb6pnh.png">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ohur4u7f5jccuxpejvp6.png">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zw93viw22xalpn1lbs6r.png">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gkgyp8cgh0jp6xl2dnf0.png">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/14uytif812lddjpcn3e5.png">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3w7e3pge6voz66aasnjg.png">
+<meta property="og:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2e7ilh6pdkya053zbzg8.png">
+<meta property="article:published_time" content="2024-11-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-12-30T02:00:12.571Z">
+<meta property="article:author" content="Kenny Chen">
+<meta property="article:tag" content="AWS, Segemaker, Machine Learning, Trading Strategies">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ctuigys918jr1xefo018.png">
+
+<link rel="canonical" href="https://kennychen.frontiertechcap.com/2024/11/30/aws-devops-q-agile-delivery-of-16-leadership-principles-for-the-financial-services-industry/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>AWS DevOps+Q Agile Delivery of 16 Leadership Principles for the Financial Services Industry | AWS Sagemaker Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">AWS Sagemaker Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Machine Learning for Financial Services and Trading Strategies</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kennychen.frontiertechcap.com/2024/11/30/aws-devops-q-agile-delivery-of-16-leadership-principles-for-the-financial-services-industry/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icon/ic_avatar_001.jpg">
+      <meta itemprop="name" content="Kenny Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AWS Sagemaker Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AWS DevOps+Q Agile Delivery of 16 Leadership Principles for the Financial Services Industry
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-30 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-30T00:00:00+08:00">2024-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-30 10:00:12" itemprop="dateModified" datetime="2024-12-30T10:00:12+08:00">2024-12-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="1-0-Preface"><a href="#1-0-Preface" class="headerlink" title="1.0 Preface"></a>1.0 Preface</h2><p>I am currently working in a financial technology company that specializes in providing <strong>(1) financial trading data</strong> and <strong>(2) macro-asset allocation solutions</strong>. The company is developing a <strong>“Macro Portfolio”</strong> system to support other departments, such as Macroeconomic Analysis, Trading Systems, Risk Management, Financial Deep Learning, Cybersecurity Engineers, etc. The new “Macro Portfolio” system will be used by the company’s financial services department to support the business of the financial services industry.</p>
+<p>The new “Macro Portfolio” system is to comply with the <strong>“Least Effort Principle”</strong>, which includes <strong>(1) <code>agile development</code></strong> and changes to respond to the volatility of the financial markets in the VOCA era, and <strong>(2) <code>agile deployment</code></strong> of the project to reduce the time wasted in communication with other departments, and implementation of automation work.</p>
+<p>However, the current development engineer (yes, that’s me!) is uncomfortable developing a “macro-portfolio” system across multiple departments. Functional requirements from the <u>macroeconomic analysis department</u>, functional feedback from the <u>risk management department</u>, code changes from the <u>financial deep learning department</u>, and code review from the <u>cybersecurity engineer department</u>.</p>
+<p>After two weeks of <strong>“DIVE DEEP investigation”</strong> and meetings with a <strong>“single leader”</strong> in each department, the real issues were <strong>(1) the project took too long to deploy</strong>, and <strong>(2) automated deployment was not achieved</strong>. </p>
+<p>If we can release the functionality in GrayRelease first, and give the <strong>“<code>Updated API Manual</code>”</strong> to other departments to try before every Thursday, we can increase the overall project development <strong>speed by +30%</strong>. In other words, customers will be able to experience the new “Macro Portfolio” functionality in 10 days instead of 13 days.</p>
+<p>Therefore, we decided to deploy the Macro Portfolio system using the AWS DevOps pipeline to accelerate the entire <strong>“<code>Prototype-&gt;Development-&gt;Deployment-&gt;Use-&gt;Feedback-&gt;Modification</code>”</strong> project lifecycle.</p>
+<blockquote>
+<p>“Customer Obsession” is matter!  – Amazon 16 leadership principles</p>
+</blockquote>
+<h3 id="1-1-Goals-of-the-AWS-DevOps-Pipeline"><a href="#1-1-Goals-of-the-AWS-DevOps-Pipeline" class="headerlink" title="1.1 Goals of the AWS DevOps Pipeline"></a>1.1 Goals of the AWS DevOps Pipeline</h3><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ctuigys918jr1xefo018.png" alt="Akshay Kapoor"></p>
+<p>In October 2024, I took a week to read <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/akskap/">Akshay Kapoor’s [AWS Senior Cloud Infrastructure Architect]</a> <a target="_blank" rel="noopener" href="https://www.amazon.com/AWS-DevOps-Simplified-foundations-delivering/dp/1837634467">AWS DevOps Simplified: Build a solid foundation in AWS to deliver enterprise-grade software solutions at scale</a>. Then I understood what <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hatted/">Raymond Tsang [AWS Senior Technical Trainer]</a> told me at the Hong Kong Re: Invent Recap in February 2024 when he said: “There is no absolute right solution, so even if you use only a small portion of AWS services and the result is better, then that’s a good solution.”</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/w8sttinspc3fpqdb6pnh.png" alt="Raymond Tsang"></p>
+<p>Now, I totally agree with <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hatted/">Raymond Tsang [AWS Senior Technical Trainer]</a>. This “AWS DevOps Pipeline” architecture was a success in results, and magically, only a few AWS services were used. For example, we didn’t use Instance <code>Auto Scaling</code>, <code>AWS ECS</code> (Elastic Container Service), <code>AWS ELB</code> (Elastic Load Balancing), <code>AWS CloudFormation</code>, etc.</p>
+<blockquote>
+<p>“<strong>Invent and Simplify</strong>” is a matter! – Amazon 16 leadership principles</p>
+</blockquote>
+<blockquote>
+<p>“**Any damn fool can make it complex. it takes a genius to make it simple.**” – Ray Dalio, Principles</p>
+</blockquote>
+<p>In my experience, success is due to the following: (1) Other departments want small features in <strong>small increments</strong>, not complete solutions. (2) More simplicity means more <strong>understanding of the problem’s root cause</strong>. So (3) it’s faster and more efficient to <strong>“Deliver Results”</strong>, even if it’s just a small portion of AWS services.</p>
+<p>Because the financial services industry is specialized, each department is responsible for different goals to help customers get value. Financial DevOps <strong>should not be a limitation or obstacle</strong>, but rather a way to better serve other departments and customers in different situations.</p>
+<p>At the same time, I understood that “Simplify &amp; Insist on the Highest Standards” is not a conflict. Although we simplified the whole project, simplicity is a good result of the Highest Standards because we performed (1) a <strong>“DIVE DEEP investigation”</strong> and (2) <strong>understanding the root cause</strong> of the problem. </p>
+<p>Although you may not believe it, in emergency situations, we use Excel to calculate the Black-Scholes model, because Excel is the fastest and easiest way to solve emergency problems, and it is also the best for <strong>“Customer Obsession”</strong> and <strong>“Deliver Results”</strong>.</p>
+<h3 id="1-2-“AWS-DevOps-Pipeline”-Architecture"><a href="#1-2-“AWS-DevOps-Pipeline”-Architecture" class="headerlink" title="1.2 “AWS DevOps Pipeline” Architecture"></a>1.2 “AWS DevOps Pipeline” Architecture</h3><p>The services used in the AWS DevOps pipeline:</p>
+<ol>
+<li>GitHub Actions</li>
+<li>AWS CodeDeploy</li>
+<li>Amazon EC2</li>
+<li>IAM</li>
+</ol>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ohur4u7f5jccuxpejvp6.png" alt="AWS DevOps Pipeline Architecture"></p>
+<p><strong>Walkthrough:</strong></p>
+<ol>
+<li>The development engineer commits the code via <code>GitHub Push</code></li>
+<li><code>GitHub Actions</code> trigger workflows</li>
+<li><code>IAMROLE_GITHUB_ARN</code> authorizes access to AWS resources.</li>
+<li><code>GitHub Actions</code> triggers <code>AWS CodeDeploy</code></li>
+<li><code>AWS CodeDeploy</code> triggers deployment to <code>Amazon EC2</code> instances</li>
+<li><code>AWS CodeDeploy</code> pulls Github resources and deploys to <code>Amazon EC2</code> instances</li>
+</ol>
+<h3 id="1-3-Optimization"><a href="#1-3-Optimization" class="headerlink" title="1.3 Optimization"></a>1.3 Optimization</h3><p>This architecture is only suitable for Agile delivery and development environments that are currently “running small steps quickly”. If it is used in a production environment, we need to use Instance <code>Auto Scaling</code>, <code>AWS ECS</code> (Elastic Container Service), <code>AWS ELB</code> (Elastic Load Balancing), etc.</p>
+<p>In addition, to make it easier for you to understand the “AWS DevOps pipeline” mechanism, in the following tutorials, <code>Python</code> and <code>Backtrader</code> are removed from the application layer, while just a simple <code>Nginx</code> and <code>static web pages</code> are used.</p>
+<h3 id="1-4-Applying-GenAI-Tools-Amazon-Q-in-Financial-Services-DevOps"><a href="#1-4-Applying-GenAI-Tools-Amazon-Q-in-Financial-Services-DevOps" class="headerlink" title="1.4 Applying GenAI Tools - Amazon Q in Financial Services DevOps"></a>1.4 Applying GenAI Tools - Amazon Q in Financial Services DevOps</h3><p><code>Amazon Q</code> is a perfect GenAI Chatbot development tool.</p>
+<p>In September 2024, I found an anomalous charge on my AWS bill, but I didn’t know why EC2 EIP became a paid service.</p>
+<p>So I asked <code>Amazon Q</code> and in just 10 seconds I knew the answer. The idle EIP is charged.<br><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zw93viw22xalpn1lbs6r.png" alt="Developer-Q-in-Financial-Services-DevOps-img001"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gkgyp8cgh0jp6xl2dnf0.png" alt="Developer-Q-in-Financial-Services-DevOps-img002"></p>
+<ol>
+<li>Select <code>EC2</code> -&gt; Elastic IP addresses -&gt; Network &amp; Security</li>
+<li>Select Elastic IPs</li>
+<li>Delete the idle EIPs</li>
+</ol>
+<p>In addition, I used <code>Amazon Q</code> to learn about AWS DevOps. The following is my experience with <code>Amazon Q</code> while applying the knowledge from <a target="_blank" rel="noopener" href="https://aws.amazon.com/certification/certified-machine-learning-specialty/">AWS Certified Machine Learning - Specialty Certification</a> exam.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/14uytif812lddjpcn3e5.png" alt="Developer-Q-in-Financial-Services-DevOps-img003"></p>
+<p>Since <code>AWS Pipeline</code> is an AWS-Centric service, integrating <code>GitHub Actions</code> does not meet the <strong>Least Effort Principle</strong>.</p>
+<p>Therefore, <code>AWS Pipeline</code> is not the best approach.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3w7e3pge6voz66aasnjg.png" alt="Developer-Q-in-Financial-Services-DevOps-img004">I know that <code>AWS Pipeline</code> is <strong>AWS-Centric Orchestrates</strong> and that it consists of <code>CodeBuild</code> and <code>CodeDeploy</code>.</p>
+<p>I asked <code>Amazon Q</code>, knowing that <code>CodeDeploy</code> was the AWS service I needed and would be the best <strong>Least Effort Principle</strong> solution with <code>GitHub Actions</code>.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2e7ilh6pdkya053zbzg8.png" alt="Developer-Q-in-Financial-Services-DevOps-img005"><u>Reference Articles:</u></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://aws.amazon.com/blogs/devops/simplify-amazon-eks-deployments-with-github-actions-and-aws-codebuild/">Simplify Amazon EKS Deployments with GitHub Actions and AWS CodeBuild</a></li>
+</ul>
+<p>After I read the tutorial on the AWS DevOps blog, it is already very similar to my solution although it is <code>AWS EKS</code>.</p>
+<p>Through <code>Amazon Q</code>, I quickly understand <strong>the differences and similarities</strong> of each AWS service and apply it more productively in my daily work. Therefore, I highly recommend using AI tools for productivity.</p>
+<h3 id="1-5-Summary"><a href="#1-5-Summary" class="headerlink" title="1.5 Summary"></a>1.5 Summary</h3><p>I shared the current situation in the financial services industry and then applied the <a target="_blank" rel="noopener" href="https://www.amazon.jobs/content/en/our-workplace/leadership-principles">AWS 16 Leadership Principles</a>, <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/akskap/">Akshay Kapoor</a> and <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hatted/">Raymond Tsang’s</a> insights on solving business and technical pain points through AWS cloud services.</p>
+<p>Finally, summarize the key points of this chapter:</p>
+<h4 id="1-5-1-Principles"><a href="#1-5-1-Principles" class="headerlink" title="1.5.1 Principles"></a>1.5.1 Principles</h4><ul>
+<li>The new “Macro Portfolio” system is to comply with the <strong>“Least Effort Principle”</strong>, which includes (1) <strong>agile development</strong>, and (2) <strong>agile deployment</strong></li>
+<li>The real issues were (1) the project <strong>took too long to deploy</strong>, and (2) <strong>automated deployment was not achieved</strong></li>
+<li>Success is due to the following: (1) Other departments want small features in <strong>small increments</strong>. (2) More simplicity means more <strong>understanding of the problem’s root cause</strong>.</li>
+</ul>
+<h4 id="1-5-2-Action"><a href="#1-5-2-Action" class="headerlink" title="1.5.2 Action"></a>1.5.2 Action</h4><ul>
+<li>Give the <strong>“<code>Updated API Manual</code>”</strong> to other departments to try before every Thursday</li>
+<li>Simplicity is a good result of the Highest Standards because we performed (1) a <strong>“DIVE DEEP investigation”</strong> and (2) <strong>understanding the root cause</strong> of the problem</li>
+</ul>
+<h4 id="1-5-3-AWS-DevOps"><a href="#1-5-3-AWS-DevOps" class="headerlink" title="1.5.3 AWS DevOps"></a>1.5.3 AWS DevOps</h4><ul>
+<li>The development engineer commits the code via <code>GitHub Push</code></li>
+<li><code>GitHub Actions</code> trigger workflows</li>
+<li><code>IAMROLE_GITHUB_ARN</code> authorizes access to AWS resources</li>
+<li><code>GitHub Actions</code> triggers <code>AWS CodeDeploy</code></li>
+<li><code>AWS CodeDeploy</code> triggers deployment to <code>Amazon EC2</code> instances</li>
+<li><code>AWS CodeDeploy</code> pulls Github resources and deploys to <code>Amazon EC2</code> instances</li>
+</ul>
+<p>In the next chapter, I’ll share (1) <strong>building an AWS DevOps pipeline</strong>, and (2) <strong>the estimated cost of AWS cloud services</strong>. I hope you all grow together in the AWS community.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2024/01/27/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/" rel="prev" title="Most three important Q&A of Trading Strategy Deployment for AWS SageMaker">
+      <i class="fa fa-chevron-left"></i> Most three important Q&A of Trading Strategy Deployment for AWS SageMaker
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/12/30/aws-best-practice-of-devops-agile-delivery-for-the-financial-services-industry/" rel="next" title="AWS Best Practice of DevOps Agile Delivery for the Financial Services Industry">
+      AWS Best Practice of DevOps Agile Delivery for the Financial Services Industry <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-0-Preface"><span class="nav-number">1.</span> <span class="nav-text">1.0 Preface</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Goals-of-the-AWS-DevOps-Pipeline"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 Goals of the AWS DevOps Pipeline</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E2%80%9CAWS-DevOps-Pipeline%E2%80%9D-Architecture"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 “AWS DevOps Pipeline” Architecture</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Optimization"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 Optimization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-Applying-GenAI-Tools-Amazon-Q-in-Financial-Services-DevOps"><span class="nav-number">1.4.</span> <span class="nav-text">1.4 Applying GenAI Tools - Amazon Q in Financial Services DevOps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Summary"><span class="nav-number">1.5.</span> <span class="nav-text">1.5 Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-1-Principles"><span class="nav-number">1.5.1.</span> <span class="nav-text">1.5.1 Principles</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-2-Action"><span class="nav-number">1.5.2.</span> <span class="nav-text">1.5.2 Action</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-3-AWS-DevOps"><span class="nav-number">1.5.3.</span> <span class="nav-text">1.5.3 AWS DevOps</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kenny Chen"
+      src="/images/icon/ic_avatar_001.jpg">
+  <p class="site-author-name" itemprop="name">Kenny Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://linkedin.com/in/kenny-chen-a560a8241" title="Linkin → https:&#x2F;&#x2F;linkedin.com&#x2F;in&#x2F;kenny-chen-a560a8241" rel="noopener" target="_blank"><i class="fab fa-linkedin fa-fw"></i>Linkin</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://dev.to/kennc" title="https:&#x2F;&#x2F;dev.to&#x2F;kennc" rel="noopener" target="_blank">Dev.to</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/chenkuang" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;chenkuang" rel="noopener" target="_blank">Cnblogs</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kenny Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -152,6 +152,598 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kennychen.frontiertechcap.com/2024/12/30/aws-best-practice-of-devops-agile-delivery-for-the-financial-services-industry/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icon/ic_avatar_001.jpg">
+      <meta itemprop="name" content="Kenny Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AWS Sagemaker Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/12/30/aws-best-practice-of-devops-agile-delivery-for-the-financial-services-industry/" class="post-title-link" itemprop="url">AWS Best Practice of DevOps Agile Delivery for the Financial Services Industry</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-12-30 00:00:00 / Modified: 10:00:08" itemprop="dateCreated datePublished" datetime="2024-12-30T00:00:00+08:00">2024-12-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>The previous chapter <a href="/2024/11/30/aws-devops-q-agile-delivery-of-16-leadership-principles-for-the-financial-services-industry/" title="AWS DevOps+Q Agile Delivery of 16 Leadership Principles for the Financial Services Industry">AWS DevOps+Q Agile Delivery of 16 Leadership Principles for the Financial Services Industry</a> shared how AWS DevOps pipelines can solve pain points in the financial services industry, and utilize the Amazon 16 Leadership Principles.</p>
+<p>In this chapter, you will learn how to build an <code>AWS DevOps pipeline</code>:</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9gdlyl75vcqmdi93fm88.png" alt="AWS DevOps"></p>
+<table>
+<thead>
+<tr>
+<th>AWS Services</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IAM</td>
+<td>Identity and Access Management</td>
+</tr>
+<tr>
+<td>EC2</td>
+<td>Cloud-computing platform</td>
+</tr>
+<tr>
+<td>Elastic IP address</td>
+<td>Static IPv4 address designed for dynamic cloud computing</td>
+</tr>
+<tr>
+<td>Route53</td>
+<td>Cloud domain name system (DNS) service</td>
+</tr>
+<tr>
+<td>CodeDeploy</td>
+<td>Automate application deployments to Amazon EC2 instances</td>
+</tr>
+<tr>
+<td>GitHub Actions</td>
+<td>Easy to automate all your software workflows</td>
+</tr>
+<tr>
+<td>Pricing Calculator</td>
+<td>Create an estimate for the cost of your use</td>
+</tr>
+</tbody></table>
+<h2 id="2-0-AWS-DevOps-Pipeline"><a href="#2-0-AWS-DevOps-Pipeline" class="headerlink" title="2.0 AWS DevOps Pipeline"></a>2.0 AWS DevOps Pipeline</h2><h3 id="2-1-Pre-requisites"><a href="#2-1-Pre-requisites" class="headerlink" title="2.1 Pre-requisites"></a>2.1 Pre-requisites</h3><h4 id="2-1-1-Knowledge-Pre-requirements"><a href="#2-1-1-Knowledge-Pre-requirements" class="headerlink" title="2.1.1 Knowledge Pre-requirements"></a>2.1.1 Knowledge Pre-requirements</h4><ul>
+<li>Create an <code>EC2</code> server</li>
+<li>Have a GitHub account and know basic <code>Github Actions</code>.</li>
+<li>Know how to setup <code>NGINX</code></li>
+<li>Know basic AWS services, including <code>EC2</code>, <code>CodeDepoly</code>, <code>IAM</code>.</li>
+</ul>
+<h4 id="2-1-2-Project-Requirements"><a href="#2-1-2-Project-Requirements" class="headerlink" title="2.1.2 Project Requirements"></a>2.1.2 Project Requirements</h4><p>First upload a simple static web project <u><em>codedeploy.nginx.001</em></u> on Github, which includes:</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Location</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>index.html</td>
+<td>.&#x2F;</td>
+<td>Static Web Page</td>
+</tr>
+<tr>
+<td>ic_alana_002_20241022_a.jpg</td>
+<td>.&#x2F;icons</td>
+<td>images on a static web page</td>
+</tr>
+<tr>
+<td>appspec.yml</td>
+<td>.&#x2F;</td>
+<td>CodeDeploy code</td>
+</tr>
+<tr>
+<td>application-stop.sh<br>before-install.sh<br>after-install.sh<br>application-start.sh<br>validate-service.sh</td>
+<td>.&#x2F;scripts</td>
+<td>CodeDeploy code</td>
+</tr>
+<tr>
+<td>appspec.yml</td>
+<td>.&#x2F;github&#x2F;workflows</td>
+<td>CodeDeploy code</td>
+</tr>
+</tbody></table>
+<p>Also, <code>GitHub access tokens</code> are needed to configure codeDeploy permissions.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/6cif3shtmugpgxoa3y6o.png" alt="GitHub access tokens"></p>
+<p><code>Github</code> -&gt; <code>Setting</code> -&gt; <code>Developer Setting</code> -&gt; <code>Tokens</code>. Add a <code>GitHub access token</code>.</p>
+<h3 id="2-2-Creating-IAM-Roles"><a href="#2-2-Creating-IAM-Roles" class="headerlink" title="2.2 Creating IAM Roles"></a>2.2 Creating IAM Roles</h3><p>A good naming style is important because as the number of <code>IAM roles</code> grows, it can be confusing for developers.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AmazonSageMaker-ExecutionRole-20240805T101031</span><br><span class="line">AmazonSagemakerCanvasBedrockRole-20240801T140683</span><br></pre></td></tr></table></figure>
+<p>{service}-{role}-{datetime}-{version}. AWS <code>Bedrock</code> and <code>SageMaker</code> auto-generated IAM naming style.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AWSCodeDeployService-EC2AccessCodeDeployRole-20241024T000000</span><br><span class="line">AWSCodeDeployService-DepolyEC2Role-20241024T000000</span><br><span class="line">AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000</span><br></pre></td></tr></table></figure>
+<p>This is the clear IAM naming style, so we will create three <code>IAM roles</code> for <code>EC2</code>, <code>CodeDeploy</code>, and <code>GitHub Actions</code>, respectively, following this official IAM naming style.</p>
+<h4 id="2-2-1-AWSCodeDeployService-EC2AccessCodeDeployRole-20241024T000000"><a href="#2-2-1-AWSCodeDeployService-EC2AccessCodeDeployRole-20241024T000000" class="headerlink" title="2.2.1 AWSCodeDeployService-EC2AccessCodeDeployRole-20241024T000000"></a>2.2.1 AWSCodeDeployService-EC2AccessCodeDeployRole-20241024T000000</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p4qwixtoies312d5unc0.png" alt="AWSCodeDeployService-EC2AccessCodeDeployRole-img001">Select <code>EC2</code> on Use Case Tab。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AmazonEC2FullAccess</span><br><span class="line">AmazonEC2RoleforAWSCodeDeploy</span><br><span class="line">AmazonS3FullAccess</span><br><span class="line">AmazonSSMManagedInstanceCore</span><br><span class="line">AWSCodeDeployFullAccess</span><br><span class="line">AWSCodeDeployRole</span><br></pre></td></tr></table></figure>
+<p>Add <code>AmazonEC2</code>, <code>AmazonS3</code>, and <code>AWSCodeDeploy</code> permissions.</p>
+<h4 id="2-2-2-AWSCodeDeployService-DepolyEC2Role-20241024T00000"><a href="#2-2-2-AWSCodeDeployService-DepolyEC2Role-20241024T00000" class="headerlink" title="2.2.2 AWSCodeDeployService-DepolyEC2Role-20241024T00000"></a>2.2.2 AWSCodeDeployService-DepolyEC2Role-20241024T00000</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/hzu125oeth1slzvrku63.png" alt="AWSCodeDeployService-DepolyEC2Role-img001">Select <code>CodeDeploy</code> on Use Case Tab.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AWSCodeDeployFullAccess</span><br><span class="line">AWSCodeDeployRole</span><br></pre></td></tr></table></figure>
+<p>Add <code>AWSCodeDeploy</code> permissions.</p>
+<h4 id="2-2-3-AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000"><a href="#2-2-3-AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000" class="headerlink" title="2.2.3 AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000"></a>2.2.3 AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/e5kbi92dvctpt9isg8i7.png" alt="AWSCodeDeployService-GitAssumeRoleWithAction-img001">Select <code>Access management</code> -&gt; <code>Identity providers</code> -&gt; <code>Add provider</code>.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/p8l8t6hj5ohhqyw0q7ji.png" alt="AWSCodeDeployService-DepolyEC2Role-img002">Used to listen to <code>GitHub Actions</code>.<br><u>Provider URL</u>: token.actions.githubusercontent.com<br><u>Audience</u>: sts.amazonaws.com<br>The <code>GitHub Identity Provider</code> then adds the <code>AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000</code> role.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fqlc0uwwfk9owjm1n434.png" alt="AWSCodeDeployService-DepolyEC2Role-img003"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/icsaf3b2o3ymbkr81zdj.png" alt="AWSCodeDeployService-DepolyEC2Role-img004">Select <code>Assign Role</code> -&gt; <code>Web identity</code> -&gt; <code>GitHub organization</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AmazonS3FullAccess</span><br><span class="line">AWSCodeDeployFullAccess</span><br></pre></td></tr></table></figure>
+<p>Add <code>S3</code>, <code>AWSCodeDeploy</code> permissions.</p>
+<h3 id="2-3-Create-Amazon-EC2"><a href="#2-3-Create-Amazon-EC2" class="headerlink" title="2.3 Create Amazon EC2"></a>2.3 Create Amazon EC2</h3><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/69hy6jydcmgk3z86qrp3.png" alt="Create-EC2-img001"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/55tk841iwh8y4ilyimf4.png" alt="Create-EC2-img002"></p>
+<ol>
+<li>Fill in the name <code>ec2.cheaper.001</code></li>
+<li>Click <code>Amazon Linux 2023 AMI</code></li>
+<li>Click <code>t3a.nano</code></li>
+</ol>
+<p>Finally, click <code>Launch instance</code> to create EC2.</p>
+<h4 id="2-3-1-Associate-Elastic-IP-address"><a href="#2-3-1-Associate-Elastic-IP-address" class="headerlink" title="2.3.1 Associate Elastic IP address"></a>2.3.1 Associate Elastic IP address</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/7ufp5ln3je0mjoe7gqni.png" alt="Associate-Elastic-IP-address-img001"></p>
+<ol>
+<li>Click on <code>Elastic IPs</code></li>
+<li>Click the <code>Allocate Elastic IP Address</code> button</li>
+</ol>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2sr0terp24fvy1blolu6.png" alt="Associate-Elastic-IP-address-img002"></p>
+<ol>
+<li>Select the name <code>ec2.paper.001</code> where EC2 has just been created</li>
+<li>Select the default <code>Private IP address</code></li>
+<li>Click the <code>Associate</code> button</li>
+</ol>
+<h4 id="2-3-2-Amazon-Route-53"><a href="#2-3-2-Amazon-Route-53" class="headerlink" title="2.3.2 Amazon Route 53"></a>2.3.2 Amazon Route 53</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kjxul2jm2qs7wmmhobjj.png" alt="Amazon-Route-53-img001"></p>
+<ol>
+<li>Fill in the <code>sub-domain name</code></li>
+<li>Fill in the EC2’s <code>Private IP address</code></li>
+<li>Click the <code>save</code> button</li>
+</ol>
+<p>Successfully set up the <code>static sub-domain name</code> and <code>IP address</code>.</p>
+<h4 id="2-3-3-Add-AWS-IAM-roles"><a href="#2-3-3-Add-AWS-IAM-roles" class="headerlink" title="2.3.3 Add AWS IAM roles"></a>2.3.3 Add <code>AWS IAM</code> roles</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/58icske6s5un32swym9z.png" alt="Add-AWS-IAM-roles-img001"></p>
+<ol>
+<li>Select <code>Actions</code></li>
+<li>Select <code>Security</code></li>
+<li>Select <code>Modify IAM role</code></li>
+</ol>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ib44ted6yfnudzcgq5v3.png" alt="Add-AWS-IAM-roles-img002">Add <code>AWSCodeDeployService-EC2AccessCodeDeployRole-20241024T000000</code>.</p>
+<h4 id="2-3-4-Install-CodeDeploy-Agent-on-Amazon-EC2"><a href="#2-3-4-Install-CodeDeploy-Agent-on-Amazon-EC2" class="headerlink" title="2.3.4 Install CodeDeploy Agent on Amazon EC2"></a>2.3.4 Install <code>CodeDeploy Agent</code> on <code>Amazon EC2</code></h4><p>Enter the <code>Amazon EC2</code> terminal.<br><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/kgruzuwlfllbh5tbp2vp.png" alt="CodeDeploy-Agent-on-Amazon-EC2-img001"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/vbl9yqgc3siuvedzt518.png" alt="CodeDeploy-Agent-on-Amazon-EC2-img002"></p>
+<ol>
+<li>Select <code>Connect</code> button</li>
+<li>Select <code>EC2 Instance Connect</code> tab</li>
+<li>Select <code>Connect</code> button</li>
+</ol>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/feo8krp4kny2rt774p3b.png" alt="CodeDeploy-Agent-on-Amazon-EC2-img002">Successfully log into the <code>Amazon EC2</code> terminal.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line">sudo yum install ruby</span><br><span class="line">sudo apt install wget</span><br><span class="line">cd /home/ec2-user</span><br><span class="line">wget https://aws-codedeploy-us-east-2.s3.us-east-2.amazonaws.com/latest/instal</span><br><span class="line">chmod +x ./install</span><br><span class="line">sudo ./install auto</span><br></pre></td></tr></table></figure>
+<p>Install <code>CodeDeploy Agent</code></p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/94rgde3rxuufi0sw9nsr.png" alt="CodeDeploy-Agent-on-Amazon-EC2-img003">Success, <code>CodeDeploy Agent</code> is running.</p>
+<h4 id="2-3-5-Optional-Install-Git-on-Amazon-EC2"><a href="#2-3-5-Optional-Install-Git-on-Amazon-EC2" class="headerlink" title="2.3.5 (Optional) Install Git on Amazon EC2"></a>2.3.5 (Optional) Install <code>Git</code> on <code>Amazon EC2</code></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install git-all</span><br><span class="line">git clone https://&#123;YOUR_GITHUB_SECRET_ID&#125;@github.com/&#123;YOUR_GITHUB_ORGANIZATION_NAME&#125;/&#123;YOUR_GITHUB_PROJECT_NAME&#125;.git</span><br><span class="line">git checkout .</span><br><span class="line">git pull origin main</span><br><span class="line">sudo chmod 777 -R PATH</span><br></pre></td></tr></table></figure>
+<p>Install <code>git</code> and pull the project to <code>Amazon EC2</code>.</p>
+<h4 id="2-3-6-Optional-Install-NGINX"><a href="#2-3-6-Optional-Install-NGINX" class="headerlink" title="2.3.6 (Optional) Install NGINX"></a>2.3.6 (Optional) Install <code>NGINX</code></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo yum update</span><br><span class="line">sudo yum install nginx -y</span><br><span class="line">sudo service nginx start</span><br><span class="line">sudo service nginx status</span><br></pre></td></tr></table></figure>
+<p>Install <code>NGINX</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo netstat -tunpl</span><br></pre></td></tr></table></figure>
+<p>Show <code>Amazon EC2</code> listening ports. At this moment <code>NGINX</code> is on port :80.<br>The default home page of NGINX is in <code>/var/www/html/index.html</code>.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/odrn9a0xlz8a7bcasvkp.png" alt="Amazon-EC2-rules-img001"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/62vfwjjvn9vf10z2qive.png" alt="Amazon-EC2-rules-img002">Ensure that <code>Source</code> and <code>Destination</code> are publicly accessible, set to <code>0.0.0.0/0</code>.</p>
+<h4 id="2-3-7-Appspec-yml"><a href="#2-3-7-Appspec-yml" class="headerlink" title="2.3.7 Appspec.yml"></a>2.3.7 Appspec.yml</h4><p>Reference Articles:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.aws.amazon.com/codedeploy/latest/userguide/reference-appspec-file.html#appspec-reference-server">(AWS Dcos) CodeDeploy AppSpec file reference</a></li>
+<li><a target="_blank" rel="noopener" href="https://aws.amazon.com/tw/blogs/devops/build-and-deploy-docker-images-to-aws-using-ec2-image-builder/">(AWS DevOps Blog) Build and Deploy Docker Images to AWS using EC2 Image Builder</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/aws-samples/build-and-deploy-docker-images-to-aws-using-ec2-image-builder">(AWS GitHub Example) Build and Deploy Docker Images to AWS using EC2 Image Builder</a></li>
+</ul>
+<p><code>Appspec.yml</code> is used to indicate the codeDeploy procedure code.<br>Deployment is divided into 5 steps: (1) <code>BeforeInstall</code> -&gt; (2) <code>BeforeInstall</code> -&gt; (3) <code>AfterInstall</code> -&gt; (4) <code>ApplicationStart</code> -&gt; (5) <code>ValidateService</code>.</p>
+<p>In the root directory, add <code>./appspec.yml</code>.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">version: 0.0</span><br><span class="line">os: linux</span><br><span class="line">files:</span><br><span class="line">    - source: /</span><br><span class="line">      destination: /usr/share/nginx/html</span><br><span class="line">hooks:</span><br><span class="line">    ApplicationStop:</span><br><span class="line">    - location: scripts/application-stop.sh</span><br><span class="line">      timeout: 300</span><br><span class="line">      runas: root</span><br><span class="line">    BeforeInstall:</span><br><span class="line">    - location: scripts/before-install.sh</span><br><span class="line">      timeout: 300</span><br><span class="line">      runas: root</span><br><span class="line">    AfterInstall:</span><br><span class="line">    - location: scripts/after-install.sh</span><br><span class="line">      timeout: 300</span><br><span class="line">      runas: root</span><br><span class="line">    ApplicationStart:</span><br><span class="line">    - location: scripts/application-start.sh</span><br><span class="line">      timeout: 300</span><br><span class="line">      runas: root</span><br><span class="line">    ValidateService:</span><br><span class="line">    - location: scripts/validate-service.sh</span><br><span class="line">      timeout: 300</span><br><span class="line">      runas: root</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>Source</code> is the root directory of the <code>GitHub project</code>. </li>
+<li><code>Destination</code> is the project pulled into<code> Amazon EC2</code>.</li>
+</ul>
+<p>In addition, a new <code>./scripts</code> folder, in which there are 5 xxxxxxxx.sh respectively.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">application-stop.sh</span><br><span class="line">before-install.sh</span><br><span class="line">after-install.sh</span><br><span class="line">application-start.sh</span><br><span class="line">validate-service.sh</span><br></pre></td></tr></table></figure>
+<p>There are 5 <code>xxxxxxxx.sh</code> in there, which are the 5 steps of <code>codeDeploy</code>.</p>
+<p><u>(1) application-stop.sh</u></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br></pre></td></tr></table></figure>
+<p>Empty. There is no need to stop the application in this tutorial.</p>
+<p><u>(2) before-install.sh</u></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br></pre></td></tr></table></figure>
+<p>Empty. There is no need to stop the application in this tutorial.</p>
+<p><u>(3) after-install.sh</u></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"> </span><br><span class="line">sudo yum update</span><br><span class="line">sudo yum install nginx -y</span><br></pre></td></tr></table></figure>
+<p>Install NGINX</p>
+<p><u>(4) application-start.sh</u></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"> </span><br><span class="line">sudo service nginx start</span><br></pre></td></tr></table></figure>
+<p>restart NGINX</p>
+<p><u>(5) validate-service.sh</u></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br></pre></td></tr></table></figure>
+<p>Empty. There is no need to stop the application in this tutorial.</p>
+<h4 id="2-3-8-Static-Website-Pages"><a href="#2-3-8-Static-Website-Pages" class="headerlink" title="2.3.8 Static Website Pages"></a>2.3.8 Static Website Pages</h4><p>Added <code>./icons</code> folder, which shows the site image <code>ic_alana_002_20241022_a.jpg</code>.</p>
+<p>Also, added <code>index.html</code> home page.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;html lang=&quot;en&quot; data-bs-theme=&quot;dark&quot;&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;meta charset=&quot;UTF-8&quot;&gt;</span><br><span class="line">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0, user-scalable=no&quot;&gt;</span><br><span class="line">&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js&quot; integrity=&quot;sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==&quot; crossorigin=&quot;anonymous&quot; referrerpolicy=&quot;no-referrer&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css&quot; integrity=&quot;sha512-jnSuA4Ss2PkkikSOLtYs8BlYIeeIK1h99ty4YfvRPAlzr377vr3CXDb7sb7eEEBYjDtcYj+AjBH3FLv5uSJuXg==&quot; crossorigin=&quot;anonymous&quot; referrerpolicy=&quot;no-referrer&quot; /&gt;</span><br><span class="line">&lt;title&gt;Alana Lam&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;div class=&quot;container&quot;&gt;</span><br><span class="line">  &lt;div class=&quot;row&quot;&gt;</span><br><span class="line">  &lt;div class=&quot;col-12 mt-4 text-center&quot;&gt;</span><br><span class="line">  &lt;h1&gt;CodeDeploy + Github Actions + EC2&lt;/h1&gt;</span><br><span class="line">  &lt;img src=&quot;./icons/ic_alana_002_20241022_a.jpg&quot; class=&quot;mt-4 rounded-circle&quot; alt=&quot;Alana Lam&quot; width=&quot;200&quot; height=&quot;200&quot;&gt;</span><br><span class="line">  &lt;h5 class=&quot;mt-4&quot;&gt;Alana Lam (AWS Builder Community Manager, Hong Kong)&lt;/h5&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;html&gt;</span><br></pre></td></tr></table></figure>
+<p>A simple static site with text and images.</p>
+<p>If you have completed <strong>“2.3.5 Install GIT”</strong> and <strong>“2.3.6 Install NGINX”</strong>,  you can type <code>EC2 EIP</code> or the <code>domain name</code> in your browser, to see the <code>Static Website Pages</code>.</p>
+<h3 id="2-4-Create-AWS-CodeDeploy"><a href="#2-4-Create-AWS-CodeDeploy" class="headerlink" title="2.4 Create AWS CodeDeploy"></a>2.4 Create <code>AWS CodeDeploy</code></h3><h4 id="2-4-1-Create-the-AWS-CodeDeploy-application"><a href="#2-4-1-Create-the-AWS-CodeDeploy-application" class="headerlink" title="2.4.1 Create the AWS CodeDeploy application"></a>2.4.1 Create the <code>AWS CodeDeploy</code> application</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c02z97s8dekfk33ayoq0.png" alt="AWS-CodeDeploy-Application-img001"></p>
+<ol>
+<li>Fill in the application name <code>test.codeDeploy.001</code></li>
+<li>Select <code>EC2/On-premises</code></li>
+<li>Select <code>Create application</code> button</li>
+</ol>
+<h4 id="2-4-2-Create-AWS-CodeDeploy-Deployment-Group"><a href="#2-4-2-Create-AWS-CodeDeploy-Deployment-Group" class="headerlink" title="2.4.2 Create AWS CodeDeploy Deployment Group"></a>2.4.2 Create <code>AWS CodeDeploy</code> Deployment Group</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cmb9o7j279csp9b6vd61.png" alt="AWS-CodeDeploy-Deployment-Group-img001"></p>
+<ol>
+<li>Select <code>Create deployment group</code> button</li>
+</ol>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s1q53nxvatdsl2x4agnj.png" alt="AWS-CodeDeploy-Deployment-Group-img002"></p>
+<ol>
+<li>Fill in the Deployment group name <code>test.deploymentGroup.001</code></li>
+<li>Select the IAM role, <code>AWSCodeDeployService-DepolyEC2Role-20241024T000000</code></li>
+<li>Remove <code>Enable load balancing</code>, because this is the simplest DevOps pipeline case, so there is no need for additional AWS services</li>
+</ol>
+<h4 id="2-4-3-Create-AWS-CodeDeploy-Deployment"><a href="#2-4-3-Create-AWS-CodeDeploy-Deployment" class="headerlink" title="2.4.3 Create AWS CodeDeploy Deployment"></a>2.4.3 Create <code>AWS CodeDeploy</code> Deployment</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gtaimopwha3gtrfyuuop.png" alt="AWS-CodeDeploy-Deployment-img001">Go to <code>test.deploymentGroup.001</code><br><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ymxugwqr3e8ydclinfwu.png" alt="AWS-CodeDeploy-Deployment-img002"> Select <code>Create deployment</code> button<br><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/fbx5mu8zc0iwqtdueg7j.png" alt="AWS-CodeDeploy-Deployment-img003"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/c0rv7enpapk51vcrwllk.png" alt="AWS-CodeDeploy-Deployment-img004">First, Select <code>My application is stored in GitHub</code></p>
+<ol>
+<li>Fill <code>GitHub token name</code></li>
+<li>Fill in the Repository name, <code>codedeploy.nginx.001</code></li>
+<li>Fill in <code>Commit ID</code></li>
+<li>Select <code>Create deployment</code> button</li>
+</ol>
+<h4 id="2-4-4-Successful-run-of-AWS-CodeDeploy"><a href="#2-4-4-Successful-run-of-AWS-CodeDeploy" class="headerlink" title="2.4.4 Successful run of AWS CodeDeploy"></a>2.4.4 Successful run of <code>AWS CodeDeploy</code></h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/pp3g3cbxyuj0gtfxjq8o.png" alt="Successful-run-of-AWS-CodeDeploy-img001">Successfully run <code>AWS codeDeploy</code></p>
+<h3 id="2-5-Create-GitHub-Actions"><a href="#2-5-Create-GitHub-Actions" class="headerlink" title="2.5 Create GitHub Actions"></a>2.5 Create <code>GitHub Actions</code></h3><p>Reference Articles:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://serverlessfirst.com/switch-codepipeline-to-github-actions/">Why I switched from AWS CodePipeline to GitHub Actions</a></li>
+</ul>
+<h4 id="2-5-1-Create-GitHub-Actions-workflow"><a href="#2-5-1-Create-GitHub-Actions-workflow" class="headerlink" title="2.5.1 Create GitHub Actions workflow"></a>2.5.1 Create <code>GitHub Actions</code> workflow</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/352jjpadapo0mkq3aus1.png" alt="Create-GitHub-Actions-workflow-img001"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/bmkfb3qaakcpo01k3k7y.png" alt="Create-GitHub-Actions-workflow-img002"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/eqgy63zf3hg5xqe2tfva.png" alt="Create-GitHub-Actions-workflow-img003"></p>
+<ol>
+<li>Click <code>New workflow</code> button</li>
+<li>Select <code>set up a workflow yourself</code> link</li>
+<li>After writing the <code>GitHub Actions</code> command, click the <code>Commit changes</code> button</li>
+</ol>
+<h4 id="2-5-2-Configurate-GitHub-Actions-secrets-and-variables"><a href="#2-5-2-Configurate-GitHub-Actions-secrets-and-variables" class="headerlink" title="2.5.2 Configurate GitHub Actions secrets and variables"></a>2.5.2 Configurate <code>GitHub Actions</code> secrets and variables</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/136xgurpy0biin1l4iu4.png" alt="GitHub-Actions-secrets-and-variables-img001"></p>
+<ol>
+<li>Select <code>Settings Tab</code></li>
+<li>Select <code>Secrets and variables</code> -&gt; <code>Actions</code> Tab</li>
+<li>Select <code>Secrets Tab</code></li>
+</ol>
+<h4 id="2-5-3-Add-GitHub-Actions-secrets-variables"><a href="#2-5-3-Add-GitHub-Actions-secrets-variables" class="headerlink" title="2.5.3 Add GitHub Actions secrets variables"></a>2.5.3 Add <code>GitHub Actions secrets</code> variables</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/t7icspzf84y8kw2te8ca.png" alt="GitHub-Actions-secrets-and-variables-img002"></p>
+<ol>
+<li>Add a new secrets variable with name <code>IAMROLE_GITHUB_ARN</code></li>
+<li>The value is the ARN of the IAM role <code>arn:aws:iam::&#123;xxxxxxxxx&#125;:role/AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000</code></li>
+<li>Click the <code>Add secret</code> button</li>
+</ol>
+<h4 id="2-5-4-Add-GitHub-Actions-variables"><a href="#2-5-4-Add-GitHub-Actions-variables" class="headerlink" title="2.5.4 Add GitHub Actions variables"></a>2.5.4 Add <code>GitHub Actions variables</code></h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/enr77t4iw0w5i3w0s310.png" alt="GitHub-Actions-secrets-and-variables-img003"></p>
+<ol>
+<li>Select <code>Variables</code> Tab</li>
+<li>Add four of <code>Actions Variables</code></li>
+<li>Select <code>New repository variable</code> button</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Variables Name</th>
+<th>Value</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AWS_REGION</td>
+<td>us-east-1</td>
+<td>The default region is <code>US East (N. Virginia)</code></td>
+</tr>
+<tr>
+<td>CODEDEPLOY_APPLICATION_NAME</td>
+<td>test.codeDeploy.001</td>
+<td>2.4.1 Create the <code>AWS CodeDeploy</code> application</td>
+</tr>
+<tr>
+<td>CODEDEPLOY_DEPLOYMENT_GROUP_NAME</td>
+<td>test.deploymentGroup.001</td>
+<td>2.4.2 Create <code>AWS CodeDeploy</code> Deployment Group</td>
+</tr>
+<tr>
+<td>IAMROLE_GITHUB_SESSION_NAME</td>
+<td>AWSGitAssumeRoleWithAction</td>
+<td>2.2.3 AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000</td>
+</tr>
+</tbody></table>
+<h4 id="2-5-5-Write-GitHub-Actions-Code"><a href="#2-5-5-Write-GitHub-Actions-Code" class="headerlink" title="2.5.5 Write GitHub Actions Code"></a>2.5.5 Write <code>GitHub Actions</code> Code</h4><p><u>.github&#x2F;workflows&#x2F;main.yml</u></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">name: Deploy</span><br><span class="line"> </span><br><span class="line">on:</span><br><span class="line">  workflow_dispatch: &#123;&#125;</span><br><span class="line"> </span><br><span class="line">jobs:</span><br><span class="line">  deploy:</span><br><span class="line">    runs-on: ubuntu-latest</span><br><span class="line">    environment: Prod</span><br><span class="line">    permissions:</span><br><span class="line">      id-token: write</span><br><span class="line">      contents: read</span><br><span class="line">    steps:</span><br><span class="line">    - name: Git clone the repository</span><br><span class="line">      uses: actions/checkout@v2</span><br><span class="line"> </span><br><span class="line">    - name: Configure AWS credentials</span><br><span class="line">      uses: aws-actions/configure-aws-credentials@v4</span><br><span class="line">      with:</span><br><span class="line">        role-to-assume: $&#123;&#123; secrets.IAMROLE_GITHUB_ARN &#125;&#125;</span><br><span class="line">        role-session-name: $&#123;&#123; vars.IAMROLE_GITHUB_SESSION_NAME &#125;&#125;</span><br><span class="line">        aws-region: $&#123;&#123; vars.AWS_REGION &#125;&#125;</span><br><span class="line">    - run: |</span><br><span class="line">        commit_hash=`git rev-parse HEAD`</span><br><span class="line">        aws deploy create-deployment --application-name $&#123;&#123; vars.CODEDEPLOY_APPLICATION_NAME &#125;&#125; --deployment-group-name $&#123;&#123; vars.CODEDEPLOY_DEPLOYMENT_GROUP_NAME &#125;&#125; --github-location repository=$&#123;&#123; github.repository &#125;&#125;,commitId=$&#123;&#123; github.sha &#125;&#125; --ignore-application-stop-failures</span><br></pre></td></tr></table></figure>
+<p>A basic version of the <code>GitHub Actions</code> Code.</p>
+<h4 id="2-5-6-Run-GitHub-Actions-Code"><a href="#2-5-6-Run-GitHub-Actions-Code" class="headerlink" title="2.5.6 Run GitHub Actions Code"></a>2.5.6 Run GitHub Actions Code</h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/odp7iwhq7mb3rfe76js0.png" alt="GitHub-Actions-Code-img001"></p>
+<ol>
+<li>Select <code>Actions</code> Tab</li>
+<li>Select <code>Deploy</code> Tab</li>
+<li>Select <code>Run workflow</code> button</li>
+</ol>
+<h4 id="2-5-7-Successfully-running-GitHub-Actions"><a href="#2-5-7-Successfully-running-GitHub-Actions" class="headerlink" title="2.5.7 Successfully running GitHub Actions"></a>2.5.7 Successfully running <code>GitHub Actions</code></h4><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/q0e6miyl13012qawno8k.png" alt="GitHub-Actions-Code-img002"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/qgouxwfm9pip2gfytmsl.png" alt="GitHub-Actions-Code-img003"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3j8l0vtugtvqso6b5ozw.png" alt="GitHub-Actions-Code-img004">Successfully ran <code>main.yml</code></p>
+<h2 id="4-0-Cost"><a href="#4-0-Cost" class="headerlink" title="4.0 Cost"></a>4.0 Cost</h2><table>
+<thead>
+<tr>
+<th>Plan</th>
+<th>USD</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Monthly cost</td>
+<td>$11.83</td>
+</tr>
+<tr>
+<td>Total 12 months cost</td>
+<td>$141.96</td>
+</tr>
+</tbody></table>
+<p>Overall, AWS’s prices are quite competitive. The most important thing is that <code>CodeDeploy</code> is cheap, and the cost of using <code>Amazon EC2 t4g.nano</code> is very low, so AWS is a <strong>low-cost + efficient</strong> cloud service provider.</p>
+<h3 id="4-1-Detailed-Estimate"><a href="#4-1-Detailed-Estimate" class="headerlink" title="4.1 Detailed Estimate"></a>4.1 Detailed Estimate</h3><table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Monthly</th>
+<th>First 12 months total (USD)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AWS CodeDeploy</td>
+<td>$8.8</td>
+<td>$105.6</td>
+</tr>
+<tr>
+<td>Amazon EC2</td>
+<td>$1.533</td>
+<td>$18.4</td>
+</tr>
+<tr>
+<td>Amazon Route 53</td>
+<td>$0.4</td>
+<td>$4.8</td>
+</tr>
+<tr>
+<td>VPN Connection</td>
+<td>$1.1</td>
+<td>$13.2</td>
+</tr>
+</tbody></table>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/uqo98i2009kdmu8y652o.png" alt="Detailed-Estimate-img001"></p>
+<h2 id="5-0-Summary"><a href="#5-0-Summary" class="headerlink" title="5.0 Summary"></a>5.0 Summary</h2><p><code>GitHub Actions</code> + <code>CodeDepoly</code> are powerful DevOps tools that fulfill the principle of <strong>“think big, take small steps”</strong> in a business environment.</p>
+<p>To conclude, let’s summarize the key points of this chapter:</p>
+<h3 id="5-1-Principles"><a href="#5-1-Principles" class="headerlink" title="5.1 Principles"></a>5.1 Principles</h3><ul>
+<li>The new “Macro Portfolio” system is to comply with the <strong>“Least Effort Principle”</strong>, which includes (1) <strong>agile development</strong>, and (2) <strong>agile deployment</strong></li>
+<li>The real issues were (1) the project <strong>took too long to deploy</strong>, and (2) <strong>automated deployment was not achieved</strong></li>
+<li>Success is due to the following: (1) Other departments want small features in <strong>small increments</strong>. (2) More simplicity means more <strong>understanding of the problem’s root cause</strong>.</li>
+</ul>
+<h3 id="5-2-Action"><a href="#5-2-Action" class="headerlink" title="5.2 Action"></a>5.2 Action</h3><ul>
+<li>Give the <strong>“<code>Updated API Manual</code>”</strong> to other departments to try before every Thursday</li>
+<li>Simplicity is a good result of the Highest Standards because we performed (1) a <strong>“DIVE DEEP investigation”</strong> and (2) <strong>understanding the root cause</strong> of the problem</li>
+</ul>
+<h3 id="5-3-AWS-DevOps"><a href="#5-3-AWS-DevOps" class="headerlink" title="5.3 AWS DevOps"></a>5.3 AWS DevOps</h3><ul>
+<li>The development engineer commits the code via <code>GitHub Push</code></li>
+<li><code>GitHub Actions</code> trigger workflows</li>
+<li><code>IAMROLE_GITHUB_ARN</code> authorizes access to AWS resources</li>
+<li><code>GitHub Actions</code> triggers <code>AWS CodeDeploy</code></li>
+<li><code>AWS CodeDeploy</code> triggers deployment to <code>Amazon EC2</code> instances</li>
+<li><code>AWS CodeDeploy</code> pulls Github resources and deploys to <code>Amazon EC2</code> instances</li>
+</ul>
+<h3 id="5-4-AWS-IAM-（CodeDeploy-EC2-Github）"><a href="#5-4-AWS-IAM-（CodeDeploy-EC2-Github）" class="headerlink" title="5.4 AWS IAM （CodeDeploy, EC2, Github）"></a>5.4 <code>AWS IAM</code> （<code>CodeDeploy</code>, <code>EC2</code>, <code>Github</code>）</h3><ul>
+<li>AWSCodeDeployService-EC2AccessCodeDeployRole-20241024T000000</li>
+<li>AWSCodeDeployService-DepolyEC2Role-20241024T000000</li>
+<li>AWSCodeDeployService-GitAssumeRoleWithAction-20241024T000000</li>
+</ul>
+<h3 id="5-5-AWS-CodeDeploy-（Appspec-yml）"><a href="#5-5-AWS-CodeDeploy-（Appspec-yml）" class="headerlink" title="5.5 AWS CodeDeploy （Appspec.yml）"></a>5.5 <code>AWS CodeDeploy</code> （Appspec.yml）</h3><ul>
+<li>BeforeInstall</li>
+<li>BeforeInstall</li>
+<li>AfterInstall</li>
+<li>ApplicationStart</li>
+<li>ValidateService</li>
+</ul>
+<h3 id="5-6-Cost"><a href="#5-6-Cost" class="headerlink" title="5.6 Cost"></a>5.6 Cost</h3><ul>
+<li>Monthly cost: $11.83 (USD)</li>
+<li>Total 12 months cost: $141.96 (USD)</li>
+</ul>
+<hr>
+<h2 id="Postscript"><a href="#Postscript" class="headerlink" title="Postscript"></a>Postscript</h2><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/d44ggs31ppq5yq50rrw8.jpg" alt="AWSCb-img001">On 14 December 2024, I attended the annual <a target="_blank" rel="noopener" href="https://live.photoplus.cn/live/19343184?accessFrom=qrcode">Amazon Greater China Community Gathering</a>. I am very thankful to AWS for bringing me an unforgettable experience.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/KQkzCBOxmJI?si=eoOoMMAD3B5ZRSid" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<p>📷Shoot and 🎬Edit by <strong><u>Kenny Chan</u></strong><br><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/s2u82n30hhpk7rfpw8d8.jpg" alt="Smile-img001">Also, thanks to <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/smile-lingxi-lv-239b6335/">Smile (Lingxi) Lv - Developer Experience Advocacy Program Manager</a> for supporting AWS Community Builder.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://kennychen.frontiertechcap.com/2024/11/30/aws-devops-q-agile-delivery-of-16-leadership-principles-for-the-financial-services-industry/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/icon/ic_avatar_001.jpg">
+      <meta itemprop="name" content="Kenny Chen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="AWS Sagemaker Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/11/30/aws-devops-q-agile-delivery-of-16-leadership-principles-for-the-financial-services-industry/" class="post-title-link" itemprop="url">AWS DevOps+Q Agile Delivery of 16 Leadership Principles for the Financial Services Industry</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2024-11-30 00:00:00" itemprop="dateCreated datePublished" datetime="2024-11-30T00:00:00+08:00">2024-11-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-12-30 10:00:12" itemprop="dateModified" datetime="2024-12-30T10:00:12+08:00">2024-12-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="1-0-Preface"><a href="#1-0-Preface" class="headerlink" title="1.0 Preface"></a>1.0 Preface</h2><p>I am currently working in a financial technology company that specializes in providing <strong>(1) financial trading data</strong> and <strong>(2) macro-asset allocation solutions</strong>. The company is developing a <strong>“Macro Portfolio”</strong> system to support other departments, such as Macroeconomic Analysis, Trading Systems, Risk Management, Financial Deep Learning, Cybersecurity Engineers, etc. The new “Macro Portfolio” system will be used by the company’s financial services department to support the business of the financial services industry.</p>
+<p>The new “Macro Portfolio” system is to comply with the <strong>“Least Effort Principle”</strong>, which includes <strong>(1) <code>agile development</code></strong> and changes to respond to the volatility of the financial markets in the VOCA era, and <strong>(2) <code>agile deployment</code></strong> of the project to reduce the time wasted in communication with other departments, and implementation of automation work.</p>
+<p>However, the current development engineer (yes, that’s me!) is uncomfortable developing a “macro-portfolio” system across multiple departments. Functional requirements from the <u>macroeconomic analysis department</u>, functional feedback from the <u>risk management department</u>, code changes from the <u>financial deep learning department</u>, and code review from the <u>cybersecurity engineer department</u>.</p>
+<p>After two weeks of <strong>“DIVE DEEP investigation”</strong> and meetings with a <strong>“single leader”</strong> in each department, the real issues were <strong>(1) the project took too long to deploy</strong>, and <strong>(2) automated deployment was not achieved</strong>. </p>
+<p>If we can release the functionality in GrayRelease first, and give the <strong>“<code>Updated API Manual</code>”</strong> to other departments to try before every Thursday, we can increase the overall project development <strong>speed by +30%</strong>. In other words, customers will be able to experience the new “Macro Portfolio” functionality in 10 days instead of 13 days.</p>
+<p>Therefore, we decided to deploy the Macro Portfolio system using the AWS DevOps pipeline to accelerate the entire <strong>“<code>Prototype-&gt;Development-&gt;Deployment-&gt;Use-&gt;Feedback-&gt;Modification</code>”</strong> project lifecycle.</p>
+<blockquote>
+<p>“Customer Obsession” is matter!  – Amazon 16 leadership principles</p>
+</blockquote>
+<h3 id="1-1-Goals-of-the-AWS-DevOps-Pipeline"><a href="#1-1-Goals-of-the-AWS-DevOps-Pipeline" class="headerlink" title="1.1 Goals of the AWS DevOps Pipeline"></a>1.1 Goals of the AWS DevOps Pipeline</h3><p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ctuigys918jr1xefo018.png" alt="Akshay Kapoor"></p>
+<p>In October 2024, I took a week to read <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/akskap/">Akshay Kapoor’s [AWS Senior Cloud Infrastructure Architect]</a> <a target="_blank" rel="noopener" href="https://www.amazon.com/AWS-DevOps-Simplified-foundations-delivering/dp/1837634467">AWS DevOps Simplified: Build a solid foundation in AWS to deliver enterprise-grade software solutions at scale</a>. Then I understood what <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hatted/">Raymond Tsang [AWS Senior Technical Trainer]</a> told me at the Hong Kong Re: Invent Recap in February 2024 when he said: “There is no absolute right solution, so even if you use only a small portion of AWS services and the result is better, then that’s a good solution.”</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/w8sttinspc3fpqdb6pnh.png" alt="Raymond Tsang"></p>
+<p>Now, I totally agree with <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hatted/">Raymond Tsang [AWS Senior Technical Trainer]</a>. This “AWS DevOps Pipeline” architecture was a success in results, and magically, only a few AWS services were used. For example, we didn’t use Instance <code>Auto Scaling</code>, <code>AWS ECS</code> (Elastic Container Service), <code>AWS ELB</code> (Elastic Load Balancing), <code>AWS CloudFormation</code>, etc.</p>
+<blockquote>
+<p>“<strong>Invent and Simplify</strong>” is a matter! – Amazon 16 leadership principles</p>
+</blockquote>
+<blockquote>
+<p>“**Any damn fool can make it complex. it takes a genius to make it simple.**” – Ray Dalio, Principles</p>
+</blockquote>
+<p>In my experience, success is due to the following: (1) Other departments want small features in <strong>small increments</strong>, not complete solutions. (2) More simplicity means more <strong>understanding of the problem’s root cause</strong>. So (3) it’s faster and more efficient to <strong>“Deliver Results”</strong>, even if it’s just a small portion of AWS services.</p>
+<p>Because the financial services industry is specialized, each department is responsible for different goals to help customers get value. Financial DevOps <strong>should not be a limitation or obstacle</strong>, but rather a way to better serve other departments and customers in different situations.</p>
+<p>At the same time, I understood that “Simplify &amp; Insist on the Highest Standards” is not a conflict. Although we simplified the whole project, simplicity is a good result of the Highest Standards because we performed (1) a <strong>“DIVE DEEP investigation”</strong> and (2) <strong>understanding the root cause</strong> of the problem. </p>
+<p>Although you may not believe it, in emergency situations, we use Excel to calculate the Black-Scholes model, because Excel is the fastest and easiest way to solve emergency problems, and it is also the best for <strong>“Customer Obsession”</strong> and <strong>“Deliver Results”</strong>.</p>
+<h3 id="1-2-“AWS-DevOps-Pipeline”-Architecture"><a href="#1-2-“AWS-DevOps-Pipeline”-Architecture" class="headerlink" title="1.2 “AWS DevOps Pipeline” Architecture"></a>1.2 “AWS DevOps Pipeline” Architecture</h3><p>The services used in the AWS DevOps pipeline:</p>
+<ol>
+<li>GitHub Actions</li>
+<li>AWS CodeDeploy</li>
+<li>Amazon EC2</li>
+<li>IAM</li>
+</ol>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/ohur4u7f5jccuxpejvp6.png" alt="AWS DevOps Pipeline Architecture"></p>
+<p><strong>Walkthrough:</strong></p>
+<ol>
+<li>The development engineer commits the code via <code>GitHub Push</code></li>
+<li><code>GitHub Actions</code> trigger workflows</li>
+<li><code>IAMROLE_GITHUB_ARN</code> authorizes access to AWS resources.</li>
+<li><code>GitHub Actions</code> triggers <code>AWS CodeDeploy</code></li>
+<li><code>AWS CodeDeploy</code> triggers deployment to <code>Amazon EC2</code> instances</li>
+<li><code>AWS CodeDeploy</code> pulls Github resources and deploys to <code>Amazon EC2</code> instances</li>
+</ol>
+<h3 id="1-3-Optimization"><a href="#1-3-Optimization" class="headerlink" title="1.3 Optimization"></a>1.3 Optimization</h3><p>This architecture is only suitable for Agile delivery and development environments that are currently “running small steps quickly”. If it is used in a production environment, we need to use Instance <code>Auto Scaling</code>, <code>AWS ECS</code> (Elastic Container Service), <code>AWS ELB</code> (Elastic Load Balancing), etc.</p>
+<p>In addition, to make it easier for you to understand the “AWS DevOps pipeline” mechanism, in the following tutorials, <code>Python</code> and <code>Backtrader</code> are removed from the application layer, while just a simple <code>Nginx</code> and <code>static web pages</code> are used.</p>
+<h3 id="1-4-Applying-GenAI-Tools-Amazon-Q-in-Financial-Services-DevOps"><a href="#1-4-Applying-GenAI-Tools-Amazon-Q-in-Financial-Services-DevOps" class="headerlink" title="1.4 Applying GenAI Tools - Amazon Q in Financial Services DevOps"></a>1.4 Applying GenAI Tools - Amazon Q in Financial Services DevOps</h3><p><code>Amazon Q</code> is a perfect GenAI Chatbot development tool.</p>
+<p>In September 2024, I found an anomalous charge on my AWS bill, but I didn’t know why EC2 EIP became a paid service.</p>
+<p>So I asked <code>Amazon Q</code> and in just 10 seconds I knew the answer. The idle EIP is charged.<br><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/zw93viw22xalpn1lbs6r.png" alt="Developer-Q-in-Financial-Services-DevOps-img001"><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/gkgyp8cgh0jp6xl2dnf0.png" alt="Developer-Q-in-Financial-Services-DevOps-img002"></p>
+<ol>
+<li>Select <code>EC2</code> -&gt; Elastic IP addresses -&gt; Network &amp; Security</li>
+<li>Select Elastic IPs</li>
+<li>Delete the idle EIPs</li>
+</ol>
+<p>In addition, I used <code>Amazon Q</code> to learn about AWS DevOps. The following is my experience with <code>Amazon Q</code> while applying the knowledge from <a target="_blank" rel="noopener" href="https://aws.amazon.com/certification/certified-machine-learning-specialty/">AWS Certified Machine Learning - Specialty Certification</a> exam.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/14uytif812lddjpcn3e5.png" alt="Developer-Q-in-Financial-Services-DevOps-img003"></p>
+<p>Since <code>AWS Pipeline</code> is an AWS-Centric service, integrating <code>GitHub Actions</code> does not meet the <strong>Least Effort Principle</strong>.</p>
+<p>Therefore, <code>AWS Pipeline</code> is not the best approach.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/3w7e3pge6voz66aasnjg.png" alt="Developer-Q-in-Financial-Services-DevOps-img004">I know that <code>AWS Pipeline</code> is <strong>AWS-Centric Orchestrates</strong> and that it consists of <code>CodeBuild</code> and <code>CodeDeploy</code>.</p>
+<p>I asked <code>Amazon Q</code>, knowing that <code>CodeDeploy</code> was the AWS service I needed and would be the best <strong>Least Effort Principle</strong> solution with <code>GitHub Actions</code>.</p>
+<p><img src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/2e7ilh6pdkya053zbzg8.png" alt="Developer-Q-in-Financial-Services-DevOps-img005"><u>Reference Articles:</u></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://aws.amazon.com/blogs/devops/simplify-amazon-eks-deployments-with-github-actions-and-aws-codebuild/">Simplify Amazon EKS Deployments with GitHub Actions and AWS CodeBuild</a></li>
+</ul>
+<p>After I read the tutorial on the AWS DevOps blog, it is already very similar to my solution although it is <code>AWS EKS</code>.</p>
+<p>Through <code>Amazon Q</code>, I quickly understand <strong>the differences and similarities</strong> of each AWS service and apply it more productively in my daily work. Therefore, I highly recommend using AI tools for productivity.</p>
+<h3 id="1-5-Summary"><a href="#1-5-Summary" class="headerlink" title="1.5 Summary"></a>1.5 Summary</h3><p>I shared the current situation in the financial services industry and then applied the <a target="_blank" rel="noopener" href="https://www.amazon.jobs/content/en/our-workplace/leadership-principles">AWS 16 Leadership Principles</a>, <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/akskap/">Akshay Kapoor</a> and <a target="_blank" rel="noopener" href="https://www.linkedin.com/in/hatted/">Raymond Tsang’s</a> insights on solving business and technical pain points through AWS cloud services.</p>
+<p>Finally, summarize the key points of this chapter:</p>
+<h4 id="1-5-1-Principles"><a href="#1-5-1-Principles" class="headerlink" title="1.5.1 Principles"></a>1.5.1 Principles</h4><ul>
+<li>The new “Macro Portfolio” system is to comply with the <strong>“Least Effort Principle”</strong>, which includes (1) <strong>agile development</strong>, and (2) <strong>agile deployment</strong></li>
+<li>The real issues were (1) the project <strong>took too long to deploy</strong>, and (2) <strong>automated deployment was not achieved</strong></li>
+<li>Success is due to the following: (1) Other departments want small features in <strong>small increments</strong>. (2) More simplicity means more <strong>understanding of the problem’s root cause</strong>.</li>
+</ul>
+<h4 id="1-5-2-Action"><a href="#1-5-2-Action" class="headerlink" title="1.5.2 Action"></a>1.5.2 Action</h4><ul>
+<li>Give the <strong>“<code>Updated API Manual</code>”</strong> to other departments to try before every Thursday</li>
+<li>Simplicity is a good result of the Highest Standards because we performed (1) a <strong>“DIVE DEEP investigation”</strong> and (2) <strong>understanding the root cause</strong> of the problem</li>
+</ul>
+<h4 id="1-5-3-AWS-DevOps"><a href="#1-5-3-AWS-DevOps" class="headerlink" title="1.5.3 AWS DevOps"></a>1.5.3 AWS DevOps</h4><ul>
+<li>The development engineer commits the code via <code>GitHub Push</code></li>
+<li><code>GitHub Actions</code> trigger workflows</li>
+<li><code>IAMROLE_GITHUB_ARN</code> authorizes access to AWS resources</li>
+<li><code>GitHub Actions</code> triggers <code>AWS CodeDeploy</code></li>
+<li><code>AWS CodeDeploy</code> triggers deployment to <code>Amazon EC2</code> instances</li>
+<li><code>AWS CodeDeploy</code> pulls Github resources and deploys to <code>Amazon EC2</code> instances</li>
+</ul>
+<p>In the next chapter, I’ll share (1) <strong>building an AWS DevOps pipeline</strong>, and (2) <strong>the estimated cost of AWS cloud services</strong>. I hope you all grow together in the AWS community.</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://kennychen.frontiertechcap.com/2024/01/27/most-three-important-qa-of-trading-strategy-deployment-for-aws-sagemaker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -784,12 +1376,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span>
       </div>
   </nav>
